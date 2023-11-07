@@ -138,25 +138,24 @@ export default function addictionDiary() {
         }
 
         return (
-            <tr key={uuidv4()}>
-              <th scope="row" key={uuidv4()}>{symptom}</th>
-              {checkboxes?.map((check, index,) => (
-                <td key={uuidv4()}>
-                  {
-                    (index + 1 === checkboxes.length) ?
-                      <input
-                        type='checkbox'
-                        key={uuidv4()}
-                        checked={tableBodyArray[index][i]}
-                        onChange={(event) => onCheckHandler(event.target.checked ? 1 : 0, i)}
-                      ></input>
-                      : <input type='checkbox' key={uuidv4()} checked={check === 1} disabled readOnly></input>
-                  }
-                </td>
-              ))
-              }
-            </tr >
-
+          <tr key={uuidv4()}>
+            <th scope="row" key={uuidv4()}>{symptom}</th>
+            {checkboxes?.map((check, index,) => (
+              <td key={uuidv4()}>
+                {
+                  (index + 1 === checkboxes.length) ?
+                    <input
+                      type='checkbox'
+                      key={uuidv4()}
+                      checked={tableBodyArray[index][i]}
+                      onChange={(event) => onCheckHandler(event.target.checked ? 1 : 0, i)}
+                    ></input>
+                    : <input type='checkbox' key={uuidv4()} checked={check === 1} disabled readOnly></input>
+                }
+              </td>
+            ))
+            }
+          </tr >
         )
       })
     )
