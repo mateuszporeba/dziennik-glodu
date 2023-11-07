@@ -69,7 +69,7 @@ export default function addictionDiary() {
             setLoading(false); // Update loading state when data is fetched
           }
           //setCheckboxesToExport(checkboxesToSave)
-          console.log('checkboxesToSave.keys():   ' + checkboxesToSave.keys() + '  ' + checkboxesToSave)
+          //console.log('checkboxesToSave.keys():   ' + checkboxesToSave.keys() + '  ' + checkboxesToSave)
         }
       })
       .catch((error) => {
@@ -119,7 +119,7 @@ export default function addictionDiary() {
           }
 
           return (
-            < tr key={uuidv4()} >
+            <tr key={uuidv4()}>
               <th scope="row" key={uuidv4()}>{symptom}</th>
               {checkboxes?.map((sum) => (
                 <td key={uuidv4()}>
@@ -138,8 +138,7 @@ export default function addictionDiary() {
         }
 
         return (
-          <>
-            < tr key={uuidv4()} >
+            <tr key={uuidv4()}>
               <th scope="row" key={uuidv4()}>{symptom}</th>
               {checkboxes?.map((check, index,) => (
                 <td key={uuidv4()}>
@@ -151,20 +150,12 @@ export default function addictionDiary() {
                         checked={tableBodyArray[index][i]}
                         onChange={(event) => onCheckHandler(event.target.checked ? 1 : 0, i)}
                       ></input>
-                      //   <input
-                      //   type='checkbox'
-                      //   defaultChecked={check === 1}
-                      //   checked={tableBodyArray[index][i]}
-                      //   onChange={(event) => onCheckHandler(event.target.checked ? 1 : 0, i)}
-                      // ></input>
                       : <input type='checkbox' key={uuidv4()} checked={check === 1} disabled readOnly></input>
-
                   }
                 </td>
               ))
               }
             </tr >
-          </>
 
         )
       })
@@ -223,8 +214,8 @@ export default function addictionDiary() {
         <Table striped bordered hover>
 
           <thead>
-            <tr>
-              <th scope="col" className={styles.stickySympthoms}>Objawy</th>
+            <tr key={uuidv4()}>
+              <th scope="col" key={uuidv4()} className={styles.stickySympthoms}>Objawy</th>
               {tableHeaders}
             </tr>
           </thead>
