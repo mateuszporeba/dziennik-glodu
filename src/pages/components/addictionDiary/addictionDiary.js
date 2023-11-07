@@ -27,18 +27,13 @@ export default function addictionDiary() {
   const [error, setError] = useState(false);
   const [checkboxesToExport, setCheckboxesToExport] = useState([])
   /////////////////////////////
-  console.log('days!!!!!!:' + days)
 
   const userId = useSelector((state) => state.user.uid)
   const dbRef = ref(getDatabase());
 
   useEffect(() => {
-    // Assuming tableBodyCheckboxes is declared somewhere in your code
     const tableBodyCheckboxes = []; // Initialize tableBodyCheckboxes as an empty array
 
-    //get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + date_Years_Months + '/table'))
-    console.log('USE EFFECT MONTH: ' + dateMonth)
-    console.log('USE EFFECT DAYS: ' + days)
     setError(false)
     get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth + '/table'))
       .then((snapshot) => {
@@ -73,7 +68,8 @@ export default function addictionDiary() {
           if (checkboxesToSave.length > 0) {
             setLoading(false); // Update loading state when data is fetched
           }
-          setCheckboxesToExport(checkboxesToSave)
+          //setCheckboxesToExport(checkboxesToSave)
+          console.log('checkboxesToSave.keys():   ' + checkboxesToSave.keys() + '  ' + checkboxesToSave)
         }
       })
       .catch((error) => {
@@ -106,8 +102,10 @@ export default function addictionDiary() {
     //console.log(updatedCheckboxes)
   };
 
+  //<p>Is Loading!!!</p>
+
   const tableBody = loading ? (
-    <p>Is Loading!!!</p>
+    console.log('loading')
   ) :
     (
       symptoms.map((symptom, i) => {
@@ -122,10 +120,10 @@ export default function addictionDiary() {
 
           return (
             < tr key={uuidv4()} >
-              <th scope="row" >{symptom}</th>
+              <th scope="row" key={uuidv4()}>{symptom}</th>
               {checkboxes?.map((sum) => (
                 <td key={uuidv4()}>
-                  <label>{sum}</label>
+                  <label key={uuidv4()}>{sum}</label>
                 </td>
               ))
               }
@@ -142,19 +140,24 @@ export default function addictionDiary() {
         return (
           <>
             < tr key={uuidv4()} >
-              <th scope="row" >{symptom}</th>
+              <th scope="row" key={uuidv4()}>{symptom}</th>
               {checkboxes?.map((check, index,) => (
                 <td key={uuidv4()}>
                   {
                     (index + 1 === checkboxes.length) ?
                       <input
                         type='checkbox'
-                        defaultChecked={check === 1}
+                        key={uuidv4()}
                         checked={tableBodyArray[index][i]}
                         onChange={(event) => onCheckHandler(event.target.checked ? 1 : 0, i)}
                       ></input>
-
-                      : <input type='checkbox' checked={check === 1} disabled readonly></input>
+                      //   <input
+                      //   type='checkbox'
+                      //   defaultChecked={check === 1}
+                      //   checked={tableBodyArray[index][i]}
+                      //   onChange={(event) => onCheckHandler(event.target.checked ? 1 : 0, i)}
+                      // ></input>
+                      : <input type='checkbox' key={uuidv4()} checked={check === 1} disabled readOnly></input>
 
                   }
                 </td>
@@ -171,7 +174,7 @@ export default function addictionDiary() {
 
     const db = getDatabase()
 
-    set(ref(db, 'users/' + userId + '/dziennik-glodu/' + date_Years_Months), {
+    set(ref(db, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth), {
       table: tableBodyArray,
     })
 
@@ -193,8 +196,8 @@ export default function addictionDiary() {
     console.log('dateMonth:  ' + Number(dateMonth + 1))
   }
   function getDaysInMonth(year, month) {
-    console.log('YeAR!!!!:   ' + year)
-    console.log('month!!!!:   ' + month)
+    // console.log('YeAR!!!!:   ' + year)
+    // console.log('month!!!!:   ' + month)
 
     if (year === new Date().getFullYear() && month === new Date().getMonth()) {
       return new Date().getDate()
@@ -204,7 +207,7 @@ export default function addictionDiary() {
       const date = new Date(year, month, 0);
       // Get the number of days in the month using the Date object
       console.log('DATA!!!!:    ' + date.getDate())
-      return date.getDate()+1;
+      return date.getDate() + 1;
     }
   }
   //controllersDate={dateYears + '-' + Number(dateMonths + 1)} />
@@ -212,7 +215,8 @@ export default function addictionDiary() {
     <>
       <AddictionDiaryController getPreviousMonth={onPreviousMonthHandler} getNextMonth={onNextMonthHandler} controllersDate={{ dateYears: dateYear, dateMonths: dateMonth }} />
       {error &&
-        <><p>Brak danych</p>
+        <>
+          <p>Brak danych</p>
           <button></button></>
       }
       <div className={styles.container} id='scrollableDiv'>
@@ -233,7 +237,7 @@ export default function addictionDiary() {
 
       </div>
       <div className={styles.SaveButtonContainer}>
-        <Button onClick={onSaveHandler} description={'Save'}/>
+        <Button onClick={onSaveHandler} description={'Save'} />
       </div>
     </>
   )
