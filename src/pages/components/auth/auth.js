@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import styles from './auth.module.css'
 //auth
-import App from '../../firebase/firebaseConfig'
+import App from '../../../firebase/firebaseConfig'
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 //db
 import { ref, add, push, set, get, onValue } from "firebase/database";
-import database from '../../firebase/firebaseDatabase'
+import database from '../../../firebase/firebaseDatabase'
 //redux
 import { useSelector, useDispatch } from 'react-redux'
 import { loginUserData, logoutUser } from '../../../store/userSlice'
