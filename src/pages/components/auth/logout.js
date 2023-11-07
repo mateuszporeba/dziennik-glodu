@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './logout.module.css'
 import { getAuth, signOut } from "firebase/auth";
 import { useDispatch } from 'react-redux'
-import { loginUserData, logoutUser } from '../store/userSlice'
+import { loginUserData, logoutUser } from '../../../store/userSlice'
 //import Button from 'react-bootstrap/Button';
 import Button from '../layout/button'
 

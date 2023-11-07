@@ -4,9 +4,9 @@ import symptomsJSON from './symptoms.json'
 import { v4 as uuidv4 } from 'uuid';
 
 import { getDatabase, ref, child, get, set } from "firebase/database";
-import database from '../firebase/firebaseDatabase'
+import database from '../../firebase/firebaseDatabase'
 import { useSelector } from 'react-redux'
-import '../store/userSlice'
+import '../../../store/userSlice'
 
 import Table from 'react-bootstrap/Table'
 import AddictionDiaryController from './addictionDiaryController';

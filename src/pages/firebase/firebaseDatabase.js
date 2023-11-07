@@ -3,6 +3,9 @@ import app from './firebaseConfig'
 import { getDatabase } from "firebase/database";
 //import {ref, set } from "firebase/database";
 
+
+
+
 const database = getDatabase(app);
 
 // console.log('zrobilo baze')
@@ -12,11 +15,11 @@ const database = getDatabase(app);
 //   email: 'email'
 // });
 
-export default database;
+//export default database;
 
 
 // import { getFirestore } from "firebase/firestore";
 
 // const db = getFirestore(app);
 
-// export default db;
+ export default database;

@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 //import { getDatabase, ref, child, get } from "firebase/database";
 // app's Firebase configuration
 
+
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_apiKey,
   authDomain: process.env.NEXT_PUBLIC_authDomain,
@@ -27,7 +28,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-console.log(app);
+//console.log(app);
 
 export default app;
 //const app = initializeApp(firebaseConfig);

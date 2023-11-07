@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styles from './content.module.css'
 
 import { useSelector } from 'react-redux'
-import '../store/userSlice'
+import '../../../store/userSlice'
 
 import AddicionDiary from '../addictionDiary/addictionDiary'
 

@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import styles from '../styles/app.module.css'
-import { store } from './components/store/store'
+import { store } from '../store/store'
 import { Provider } from 'react-redux'
 
 import Header from './components/layout/header.js'

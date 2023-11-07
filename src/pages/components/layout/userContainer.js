@@ -6,7 +6,7 @@ import LogOut from '../auth/logout'
 import ModalResetPassword from '../auth/modalResetPassword'
 import ModalCreateAccount from '../auth/modalCreateAccount'
 import { useSelector, useDispatch } from 'react-redux'
-import '../store/userSlice'
+import '../../../store/userSlice'
 //
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import Modal from '../UI/modal'
