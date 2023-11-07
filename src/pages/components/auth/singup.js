@@ -18,7 +18,7 @@ const SignUp = () => {
     //check if passwords match. If they do, create user in Firebase
     // and redirect to your logged in page.
     if(passwordOne === passwordTwo)
-      createUserWithEmailAndPassword(email:string, passwordOne: string)
+      createUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
         console.log("Success. The user is created in Firebase")
         router.push("/logged_in");
