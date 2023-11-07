@@ -101,7 +101,6 @@ export default function addictionDiary() {
   };
 
   //<p>Is Loading!!!</p>
-
   const tableBody = loading ? (
     console.log('loading')
   ) :
