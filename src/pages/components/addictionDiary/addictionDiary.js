@@ -93,8 +93,6 @@ export default function addictionDiary() {
     }
   }, [tableBodyArray])
 
-
-
   const onCheckHandler = (checkValue, index) => {
     const updatedCheckboxes = [...tableBodyArray];
     updatedCheckboxes[days - 1][index] = checkValue;
