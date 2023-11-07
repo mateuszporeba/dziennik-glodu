@@ -1,0 +1,143 @@
+/* header h1 {
+  font-size: 70px;
+  font-weight: 600;
+  background-image: linear-gradient(to bottom left, #553c9a, #ee4b2b);
+  
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+} */
+
+/* background-image: radial-gradient(#553c9a, #ee4b2b); */
+
+.header {
+  /* position: absolute;
+  width: 100%;
+  height: 50%; */
+  height: 100px;
+  /* background-color: red; */
+  position: absolute;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  text-align: center;
+  
+}
+
+.h1-Container {
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  text-wrap: nowrap;
+  height: 70px;
+  z-index: 1;
+  
+}
+
+.h1 {
+  font-size: 32px;
+  font-weight: 600;
+  background-image: radial-gradient(#553c9a, #ee4b2b);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.ui-container {
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  /* right: 10px; */
+  z-index: 1;
+}
+
+/* background: url("https://i.ibb.co/wQZVxxk/wave.png"); */
+.wave {
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100px;
+  background: url(./wave3.png), #6DB3F2;
+  background-color: skyblue;
+  opacity: 0.7;
+  background-size: 1000px 100px;
+  box-shadow: inset 0 0 0 1000px rgba(116, 110, 110, 0.2);
+  /* transform: rotate(180deg); */
+}
+
+.wave#wave1 {
+  transform: rotate(180deg);
+  background-color: skyblue;
+  z-index: -1;
+  opacity: 1;
+  bottom: 0;
+  animation: animateWaves 4s linear infinite;
+}
+
+.wave#wave2 {
+  transform: rotate(180deg);
+  background-color: skyblue;
+  z-index: -2;
+  opacity: 0.5;
+  bottom: 10px;
+  animation: animate 5s linear infinite !important;
+}
+
+.wave#wave3 {
+  transform: rotate(180deg);
+  background-color: red;
+  z-index: -1;
+  opacity: 0.2;
+  bottom: 15px;
+  animation: animateWaves 3s linear infinite;
+}
+
+.wave#wave4 {
+  transform: rotate(180deg);
+  z-index: -2;
+  background-color: skyblue;
+  opacity: 0.7;
+  bottom: 20px;
+  animation: animate 6s linear infinite !important;
+}
+
+.wave#wave5 {
+  transform: rotate(180deg);
+  z-index: -1;
+  background-color: skyblue;
+  opacity: 0.7;
+  bottom: 20px;
+  animation: animate 8s linear infinite !important;
+}
+
+.wave#wave6 {
+  transform: rotate(180deg);
+  z-index: -2;
+  background-color: skyblue;
+  opacity: 0.7;
+  bottom: 20px;
+  animation: animate 11s linear infinite !important;
+}
+
+@keyframes animateWaves {
+  0% {
+    background-position-x: 1000px;
+  }
+
+  100% {
+    background-positon-x: 0px;
+  }
+}
+
+@keyframes animate {
+  0% {
+    background-position-x: -1000px;
+  }
+
+  100% {
+    background-positon-x: 0px;
+  }
+}

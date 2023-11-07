@@ -1,0 +1,87 @@
+
+/* CSS */
+.button {
+  background-color: #fbeee0;
+  border: 2px solid #422800;
+  border-radius: 30px;
+  box-shadow: #422800 4px 4px 0 0;
+  color: #422800;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  text-wrap: nowrap;
+  top: 15px;
+  vertical-align: middle;
+  margin: 10px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #fff;
+}
+
+.button:active {
+  box-shadow: #422800 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
+@media (max-width: 500px) {
+  .button {
+    min-width: 120px;
+    font-size: 25px;
+    /* padding: 0 25px; */
+  }
+}
+
+/* CSS */
+/* .button {
+  appearance: none;
+  background-color: #FFFFFF;
+  border-radius: 40em;
+  border-style: none;
+  box-shadow: #ADCFFF 0 -12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system,sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -.24px;
+  margin: 5px;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  text-wrap: nowrap;
+  transition: all .15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  position: relative;
+}
+
+.button:hover {
+  background-color: #FFC229;
+  box-shadow: #FF6314 0 -6px 8px inset;
+  transform: scale(1.125);
+}
+
+.button:active {
+  transform: scale(1.025);
+}
+
+@media (min-width: 768px) {
+  .button {
+    font-size: 1.5rem;
+    padding: .75rem 2rem;
+  }
+} */
