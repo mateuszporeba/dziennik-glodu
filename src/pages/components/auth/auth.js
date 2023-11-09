@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styles from './auth.module.css'
 //auth
 import App from '../../../firebase/firebaseConfig'
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, signInWithRedirect } from "firebase/auth";
 //db
 import { ref, add, push, set, get, onValue } from "firebase/database";
 import database from '../../../firebase/firebaseDatabase'
@@ -60,6 +60,7 @@ export default function Auth(props) {
 
   //AUTH with google provider
   const loginWithGoogleAccountHandler = () => {
+    //signInWithRedirect(auth, provider)
     signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
@@ -67,7 +68,6 @@ export default function Auth(props) {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-        console.log(user)
         const user_UID = user.uid.toString()
         checkUsersDatabase(user_UID)
         dispatch(loginUserData([user.email, user.uid]))
@@ -79,7 +79,7 @@ export default function Auth(props) {
         const errorCode = error.code;
         const errorMessage = error.message;
         // The email of the user's account used.
-        const email = error.customData.email;
+       // const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
@@ -113,14 +113,7 @@ export default function Auth(props) {
         <input className={wrongCredentials && styles.inputWrongCredentials} type="password" value={password} onChange={handlePasswordChange} onClick={handlePasswordClick} placeholder="Password" />
         <button onClick={loginHandler} className="btn btn-primary btn-sm">Login</button>
         {wrongCredentials && <p>Wrong e-mail or password</p>}
-        <button onClick={loginWithGoogleAccountHandler} className={styles.buttonContinueWithGoogle}>
-          <Image
-            src={ContinuWithGoogleImage}
-            width={189}
-            height={40}
-            alt="Continue with google account"
-          ></Image>
-        </button>
+  
 
         <button onClick={props.onClose} className={styles.buttonExit}>Exit</button>
       </div>

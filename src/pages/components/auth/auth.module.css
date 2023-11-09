@@ -20,10 +20,10 @@
   width: 189px;
   height: 40px;
   top: 40px;
-  /* padding-top: 20px; */
+  /* padding-top: 20px;  */
 }
 
-.inputWrongCredentials{
+.inputWrongCredentials {
   border: solid red 5px;
   border-color: red;
 }

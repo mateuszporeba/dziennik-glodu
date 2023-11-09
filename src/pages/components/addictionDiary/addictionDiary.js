@@ -154,7 +154,7 @@ export default function addictionDiary() {
             {checkboxes?.map((check, index,) => (
               <td key={uuidv4()}>
                 {
-                  (index + 1 === checkboxes.length) ?
+                  (index === checkboxes.length - 1 && dateYear === new Date().getFullYear() && dateMonth === new Date().getMonth()) ?
                     <input
                       type='checkbox'
                       key={uuidv4()}
@@ -213,7 +213,7 @@ export default function addictionDiary() {
   //controllersDate={dateYears + '-' + Number(dateMonths + 1)} />
   return (
     <>
-      {isAnsweringQuestions ? <AddicitonDiaryDailyQuestions saveAnswers={onDailyAnswersSaveHandler} closeDailyQuestions={()=>setIsAnsweringQuestions(!isAnsweringQuestions)}/>
+      {isAnsweringQuestions ? <AddicitonDiaryDailyQuestions saveAnswers={onDailyAnswersSaveHandler} closeDailyQuestions={() => setIsAnsweringQuestions(!isAnsweringQuestions)} />
         : <>
           <AddictionDiaryController getPreviousMonth={onPreviousMonthHandler} getNextMonth={onNextMonthHandler} controllersDate={{ dateYears: dateYear, dateMonths: dateMonth }} />
           {error &&
