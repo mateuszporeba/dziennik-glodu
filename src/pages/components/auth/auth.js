@@ -17,9 +17,10 @@ import Image from 'next/image'
 import ContinuWithGoogleImage from './web_light_rd_ctn@1x.png'
 
 export default function Auth(props) {
-
-  const [email, setEmail] = useState('poreba.mateusz@gmail.com');
-  const [password, setPassword] = useState('dupa123');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // const [email, setEmail] = useState('poreba.mateusz@gmail.com');
+  // const [password, setPassword] = useState('dupa123');
   const [wrongCredentials, setWrongCredentials] = useState(false)
   const dispatch = useDispatch()
 
