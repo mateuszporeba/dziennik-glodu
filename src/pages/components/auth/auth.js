@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styles from './auth.module.css'
 //auth
 import App from '../../../firebase/firebaseConfig'
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 //db
 import { ref, add, push, set, get, onValue } from "firebase/database";
 import database from '../../../firebase/firebaseDatabase'
@@ -19,33 +19,44 @@ import ContinuWithGoogleImage from './web_light_rd_ctn@1x.png'
 export default function Auth(props) {
 
   const [email, setEmail] = useState('poreba.mateusz@gmail.com');
-  const [password, setPassword] = useState('5123098');
+  const [password, setPassword] = useState('dupa123');
+  const [wrongCredentials, setWrongCredentials] = useState(false)
   const dispatch = useDispatch()
-
-  const auth = getAuth(App);
-  const provider = new GoogleAuthProvider();
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
-  const loginHandler = () => {
-    // firebase.auth().signInWithEmailAndPassword(email, password)
 
+  const handleEmailClick = () => setWrongCredentials(false)
+  const handlePasswordClick = () => setWrongCredentials(false)
+
+  const auth = getAuth(App);
+  const provider = new GoogleAuthProvider();
+
+  const loginHandler = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Handle successful login
         const user = userCredential.user
-        //dispatch(loginUserData(user.email))
-        dispatch(loginUserData([user.email, user.uid]))
-        const user_UID = user.uid.toString()
-        writeUserDatabase(user_UID)
-        props.onClose()
+        //Check if e-mail address is verified
+        if (user.emailVerified) {
+          // Handle successful login
+          const user_UID = user.uid.toString()
+          checkUsersDatabase(user_UID)
+          dispatch(loginUserData([user.email, user.uid]))
+          props.onClose()
+        } else {
+          signOut(auth).catch((error) => {
+            console.log('Error during log out!!!')
+          })
+          alert("E-mail address not verified! Please check your mailbox")
+        }
       })
       .catch((error) => {
         // Handle login error
-        console.error('Login failed:', error);
-      });
-  };
+        setWrongCredentials(true)
+        //console.error('Login failed:', error);
+      })
+  }
 
   //AUTH with google provider
   const loginWithGoogleAccountHandler = () => {
@@ -56,8 +67,10 @@ export default function Auth(props) {
         const token = credential.accessToken;
         // The signed-in user info.
         const user = result.user;
-
-        dispatch(loginUserData(user.email))
+        console.log(user)
+        const user_UID = user.uid.toString()
+        checkUsersDatabase(user_UID)
+        dispatch(loginUserData([user.email, user.uid]))
         props.onClose()
         // IdP data available using getAdditionalUserInfo(result)
         // ...
@@ -75,78 +88,31 @@ export default function Auth(props) {
   }
   // /new Date().getFullYear() +'_' + new Date().getMonth()
 
-  const writeUserDatabase = (userId) => {
+  const checkUsersDatabase = (userId) => {
     const date = (new Date().getFullYear() + '_' + new Date().getMonth()).toString()
 
     const ThisMonthDatabaseRef = ref(database, 'users/' + userId + '/dziennik-glodu/' + date);
-    //console.log('ThisMonthDatabaseRef  ' + ThisMonthDatabaseRef)
-
-    // const table = [
-    //   [
-    //     1, 0, 0, 0, 1, 1, 0,
-    //     0, 0, 1, 1, 0, 0, 1,
-    //     1, 0, 1, 0, 1, 1, 1,
-    //     1
-    //   ],
-    //   [
-    //     0, 1, 1, 1, 0, 0, 1,
-    //     1, 1, 0, 0, 0, 1, 1,
-    //     0, 1, 0, 0, 0, 0, 0,
-    //     0
-    //   ],
-    //   [
-    //     0, 0, 1, 1, 0, 0, 0,
-    //     0, 1, 0, 1, 0, 1, 1,
-    //     0, 1, 1, 1, 1, 0, 0,
-    //     0
-    //   ],
-    //   [
-    //     1, 1, 1, 0, 0, 1, 1,
-    //     1, 0, 1, 1, 0, 1, 1,
-    //     1, 1, 1, 1, 1, 1, 1,
-    //     1
-    //   ],
-    //   [],
-    //   [],
-    //   [
-    //     0, 0, 0, 0, 1, 0, 0,
-    //     1, 0, 1, 0, 0, 0, 1,
-    //     0, 0, 1, 0, 0, 1, 1,
-    //     0
-    //   ]
-    // ]
 
     onValue(ThisMonthDatabaseRef, (snapshot) => {
       const data = snapshot.exists()
-      //console.log(data)
+
       if (!data) {
-        console.log('setowanie!!!!!')
-        // push(ref(database, 'users/' + userId + '/dziennik-glodu1/' + date), {
-        //   ObjektTabeli: table
-        // })
-          set(ref(database, 'users/' + userId + '/dziennik-glodu/' + date), {
-            table: { 0: Array.from({ length: 22 }, () => 0) },
-            //table: table,
-           // table: [Array.from({ length: 22 }).fill(0)],t
-           //table: Array.from({ length: 22 }, () => [0]),
-          //table: new Array(21).fill(0),
+        set(ref(database, 'users/' + userId + '/dziennik-glodu/' + date), {
+          table: { 0: Array.from({ length: 22 }, () => 0) },
         })
       }
     })
-    // if (!ThisMonthDatabaseRef) {
-    //   set(ref(database, 'users/' + user_UID), {
-    //     user_UID
-    //   })
-    // }
   }
 
+  //alert("E-mail address not verified! Please check your mailbox")
 
   return (
     <Modal onClose={props.onClose}>
       <div className={styles.container}>
-        <input type="email" value={email} onChange={handleEmailChange} placeholder="E-mail" />
-        <input type="password" value={password} onChange={handlePasswordChange} placeholder="Password" />
+        <input className={wrongCredentials && styles.inputWrongCredentials} type="email" value={email} onChange={handleEmailChange} onClick={handleEmailClick} placeholder="E-mail" />
+        <input className={wrongCredentials && styles.inputWrongCredentials} type="password" value={password} onChange={handlePasswordChange} onClick={handlePasswordClick} placeholder="Password" />
         <button onClick={loginHandler} className="btn btn-primary btn-sm">Login</button>
+        {wrongCredentials && <p>Wrong e-mail or password</p>}
         <button onClick={loginWithGoogleAccountHandler} className={styles.buttonContinueWithGoogle}>
           <Image
             src={ContinuWithGoogleImage}

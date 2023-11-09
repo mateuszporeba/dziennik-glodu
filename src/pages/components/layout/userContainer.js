@@ -62,15 +62,14 @@ export default function loginContainer() {
     <div className={styles.container}>
       {!userIsLoggedin ? <>
         <div >
-          <Button onClick={showLoginHandler} description={'Sign in'}/>
-          <Button onClick={showCreateAccountHandler} description={'Register'}/>
-          <Button onClick={showResetPasswordHandler} description={'Forgot password?'}/>
+          <Button onClick={showLoginHandler} description={'Zaloguj się'}/>
+          <Button onClick={showCreateAccountHandler} description={'Zarejestruj się'}/>
+          <Button onClick={showResetPasswordHandler} description={'Zapomniałeś hasła?'}/>
         </div>
       </>
         :
         <>
           <div className={styles.LoggedUserContainer}>
-            <p>{user}</p>
             <LogOut />
           </div>
         </>}
@@ -80,3 +79,11 @@ export default function loginContainer() {
     </div>
   )
 }
+
+
+//   <>
+//   <div className={styles.LoggedUserContainer}>
+//     <p>{user}</p>
+//     <LogOut />
+//   </div>
+// </>

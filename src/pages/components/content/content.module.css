@@ -1,6 +1,7 @@
 .container {
   position: absolute;
   width: 100%;
+  min-width: 320px;
   /* min-height: 50rem; */
   height: 100%;
   max-height: fit-content;

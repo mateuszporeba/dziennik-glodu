@@ -11,6 +11,7 @@ import '../../../store/userSlice'
 import Table from 'react-bootstrap/Table'
 import AddictionDiaryController from './addictionDiaryController';
 import Button from '../layout/button'
+import AddicitonDiaryDailyQuestions from './addicitonDiaryDailyQuestions';
 
 export default function addictionDiary() {
 
@@ -25,7 +26,7 @@ export default function addictionDiary() {
   const [tableBodyArray, setTableBodyArray] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false);
-  const [checkboxesToExport, setCheckboxesToExport] = useState([])
+  const [isAnsweringQuestions, setIsAnsweringQuestions] = useState(true)
   /////////////////////////////
 
   const userId = useSelector((state) => state.user.uid)
@@ -98,6 +99,19 @@ export default function addictionDiary() {
     updatedCheckboxes[days - 1][index] = checkValue;
     setTableBodyArray(updatedCheckboxes);
     //console.log(updatedCheckboxes)
+  }
+
+  const onDailyAnswersSaveHandler = (DailyArray) => {
+    const updatedCheckboxes = [...tableBodyArray];
+    updatedCheckboxes[days - 1] = DailyArray;
+    console.log(updatedCheckboxes)
+    const db = getDatabase()
+    set(ref(db, 'users/' + userId + '/dziennik-glodu/' + new Date().getFullYear() + '_' + new Date().getMonth()), {
+      table: updatedCheckboxes,
+    })
+    console.log('wykonano onDailyAnswersSaveHandler')
+    setTableBodyArray(updatedCheckboxes);
+    //console.log(updatedCheckboxes)
   };
 
   //<p>Is Loading!!!</p>
@@ -160,8 +174,7 @@ export default function addictionDiary() {
   const onSaveHandler = () => {
 
     const db = getDatabase()
-
-    set(ref(db, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth), {
+    set(ref(db, 'users/' + userId + '/dziennik-glodu/' + new Date().getFullYear() + '_' + new Date().getMonth()), {
       table: tableBodyArray,
     })
 
@@ -200,32 +213,36 @@ export default function addictionDiary() {
   //controllersDate={dateYears + '-' + Number(dateMonths + 1)} />
   return (
     <>
-      <AddictionDiaryController getPreviousMonth={onPreviousMonthHandler} getNextMonth={onNextMonthHandler} controllersDate={{ dateYears: dateYear, dateMonths: dateMonth }} />
-      {error &&
-        <>
-          <p>Brak danych</p>
-          <button></button></>
+      {isAnsweringQuestions ? <AddicitonDiaryDailyQuestions saveAnswers={onDailyAnswersSaveHandler} closeDailyQuestions={()=>setIsAnsweringQuestions(!isAnsweringQuestions)}/>
+        : <>
+          <AddictionDiaryController getPreviousMonth={onPreviousMonthHandler} getNextMonth={onNextMonthHandler} controllersDate={{ dateYears: dateYear, dateMonths: dateMonth }} />
+          {error &&
+            <>
+              <p>Brak danych</p>
+              <button></button></>
+          }
+          <div className={styles.container} id='scrollableDiv'>
+            <Table striped bordered hover>
+
+              <thead>
+                <tr key={uuidv4()}>
+                  <th scope="col" key={uuidv4()} className={styles.stickySympthoms}>Objawy</th>
+                  {tableHeaders}
+                </tr>
+              </thead>
+
+              <tbody>
+                {tableBody}
+              </tbody>
+
+            </Table>
+
+          </div>
+          <div className={styles.SaveButtonContainer}>
+            <Button onClick={onSaveHandler} description={'Save'} />
+          </div>
+        </>
       }
-      <div className={styles.container} id='scrollableDiv'>
-        <Table striped bordered hover>
-
-          <thead>
-            <tr key={uuidv4()}>
-              <th scope="col" key={uuidv4()} className={styles.stickySympthoms}>Objawy</th>
-              {tableHeaders}
-            </tr>
-          </thead>
-
-          <tbody>
-            {tableBody}
-          </tbody>
-
-        </Table>
-
-      </div>
-      <div className={styles.SaveButtonContainer}>
-        <Button onClick={onSaveHandler} description={'Save'} />
-      </div>
     </>
   )
 }

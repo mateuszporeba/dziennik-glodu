@@ -1,0 +1,146 @@
+.container {
+  position: relative;
+  top: 150px;
+  height: 350px;
+  width: 350px;
+}
+
+.card {
+  text-align: center;
+  position: relative;
+  min-width: 320px;
+  padding: 20px;
+  padding-top: 70px;
+  height: 350px;
+  border-radius: 10px;
+  background: #e9e4dfbe;
+  box-shadow: 5px 5px 30px #bebebe6b,
+    -5px -1px 5px #ffffff69;
+}
+
+.buttonContainer {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+}
+
+.button {
+  background-color: #fbeee0;
+  border: 2px solid #422800;
+  border-radius: 30px;
+  box-shadow: #422800 4px 4px 0 0;
+  color: #422800;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  text-wrap: nowrap;
+  top: 15px;
+  vertical-align: middle;
+  margin: 10px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #fff;
+}
+
+.button:active {
+  box-shadow: #422800 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
+@media (max-width: 500px) {
+  .button {
+    min-width: 120px;
+    font-size: 25px;
+    /* padding: 0 25px; */
+  }
+}
+
+.buttonAnswered {
+  background-color: #eb871d;
+  border: 2px solid #422800;
+  border-radius: 30px;
+  box-shadow: #422800 4px 4px 0 0;
+  color: #422800;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 0 18px;
+  text-wrap: nowrap;
+  top: 15px;
+  vertical-align: middle;
+  margin: 10px;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  text-align: center;
+}
+
+.buttonAnswered:hover {
+  background-color: #fff;
+}
+
+.buttonAnswered:active {
+  box-shadow: #422800 2px 2px 0 0;
+  transform: translate(2px, 2px);
+}
+
+@media (max-width: 500px) {
+  .buttonAnswered {
+    min-width: 120px;
+    font-size: 25px;
+    /* padding: 0 25px; */
+  }
+}
+
+.buttonGoBack {
+  position:absolute;
+  top: 5px;
+  right: 5px;
+  background-color: transparent;
+  border: none;
+}
+
+.questionContainer {
+  position: fixed;
+  top: 15vh;
+  left: 5%;
+  width: 90%;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  z-index: 30;
+  animation: slide-down 300ms ease-out forwards;
+}
+
+@media (min-width: 768px) {
+  .modal {
+    width: 40rem;
+    left: calc(50% - 20rem);
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
