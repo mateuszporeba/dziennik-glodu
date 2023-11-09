@@ -18,8 +18,7 @@ export const userSlice = createSlice({
     loginUserData: (state, action) => {
       state.email = action.payload[0]
       state.uid = action.payload[1]
-
-      console.log('email:  ' + state.email + '   uid:   ' + state.uid)
+      console.log('zalogowano:  ' + state.email)
     },
     logoutUser: (state) => {
       state.email = null
