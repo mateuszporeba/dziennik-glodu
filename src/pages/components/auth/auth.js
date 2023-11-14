@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styles from './auth.module.css'
 //auth
 import App from '../../../firebase/firebaseConfig'
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, signInWithRedirect } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 //db
 import { ref, add, push, set, get, onValue } from "firebase/database";
 import database from '../../../firebase/firebaseDatabase'
@@ -19,8 +19,8 @@ import ContinuWithGoogleImage from './web_light_rd_ctn@1x.png'
 export default function Auth(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [email, setEmail] = useState('poreba.mateusz@gmail.com');
-  // const [password, setPassword] = useState('dupa123');
+  //const [email, setEmail] = useState('poreba.mateusz@gmail.com');
+  //const [password, setPassword] = useState('dupa123');
   const [wrongCredentials, setWrongCredentials] = useState(false)
   const dispatch = useDispatch()
 
@@ -32,7 +32,6 @@ export default function Auth(props) {
   const handlePasswordClick = () => setWrongCredentials(false)
 
   const auth = getAuth(App);
-  const provider = new GoogleAuthProvider();
 
   const loginHandler = () => {
     signInWithEmailAndPassword(auth, email, password)
@@ -61,7 +60,6 @@ export default function Auth(props) {
 
   //AUTH with google provider
   const loginWithGoogleAccountHandler = async () => {
-
       const provider = new GoogleAuthProvider(); // Use 'GoogleAuthProvider' directly
       provider.setCustomParameters({ prompt: 'select_account' });
       signInWithPopup(auth, provider)
@@ -76,7 +74,7 @@ export default function Auth(props) {
         dispatch(loginUserData([user.email, user.uid]))
         props.onClose()
         // IdP data available using getAdditionalUserInfo(result)
-        // ...
+        
       }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
@@ -88,38 +86,7 @@ export default function Auth(props) {
         // ...
         console.error('Login failed:', error);
       })
-    //signInWithRedirect(auth, provider)
-
   }
-  // const loginWithGoogleAccountHandler = () => {
-    
-  //   //signInWithRedirect(auth, provider)
-  //   signInWithPopup(auth, provider)
-  //     .then((result) => {
-  //       // This gives you a Google Access Token. You can use it to access the Google API.
-  //       const credential = GoogleAuthProvider.credentialFromResult(result);
-  //       const token = credential.accessToken;
-  //       // The signed-in user info.
-  //       const user = result.user;
-  //       const user_UID = user.uid.toString()
-  //       checkUsersDatabase(user_UID)
-  //       dispatch(loginUserData([user.email, user.uid]))
-  //       props.onClose()
-  //       // IdP data available using getAdditionalUserInfo(result)
-  //       // ...
-  //     }).catch((error) => {
-  //       // Handle Errors here.
-  //       const errorCode = error.code;
-  //       const errorMessage = error.message;
-  //       // The email of the user's account used.
-  //      // const email = error.customData.email;
-  //       // The AuthCredential type that was used.
-  //       const credential = GoogleAuthProvider.credentialFromError(error);
-  //       // ...
-  //       console.error('Login failed:', error);
-  //     });
-  // }
-  // /new Date().getFullYear() +'_' + new Date().getMonth()
 
   const checkUsersDatabase = (userId) => {
     const date = (new Date().getFullYear() + '_' + new Date().getMonth()).toString()

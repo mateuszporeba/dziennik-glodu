@@ -6,6 +6,7 @@ import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "
 //import { getDatabase, ref, push, set, onValue } from "firebase/database";
 
 import Modal from '../UI/modal'
+import LoginWithGoogleAuthProvider from './loginWithGoogleAuthProvider';
 
 export default function createAccount(props) {
   const [email, setEmail] = useState('');
@@ -74,7 +75,10 @@ export default function createAccount(props) {
             {invalidEmail && <p>Invalid e-mail!</p>}
             <input type="password" value={password} onChange={passwordChangeHandler} placeholder="Password" />
             {missingPassword && <p>Missing password!</p>}
-            <button onClick={signUpHandler} className="btn btn-primary btn-sm">Sign up!</button>
+            <div className={styles.signUpContainer}>
+              <button onClick={signUpHandler}  className="btn btn-primary btn-sm">Sign up!</button>
+              <LoginWithGoogleAuthProvider id={styles.buttonContinueWithGoogle} />
+            </div>
           </> :
           <>
             <h3>The account has been successfully created</h3>
