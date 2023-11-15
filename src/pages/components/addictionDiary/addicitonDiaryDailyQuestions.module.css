@@ -103,10 +103,13 @@
     font-size: 25px;
     /* padding: 0 25px; */
   }
+  .button:hover {
+    background-color: #fbeee0;
+  }
 }
 
 .buttonGoBack {
-  position:absolute;
+  position: absolute;
   top: 5px;
   right: 5px;
   background-color: transparent;
