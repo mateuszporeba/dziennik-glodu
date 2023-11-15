@@ -14,8 +14,8 @@ import { loginUserData, logoutUser } from '../../../store/userSlice'
 import Modal from '../UI/modal'
 //Login with Google account
 import LoginWithGoogleAuthProvider from './loginWithGoogleAuthProvider';
-import Image from 'next/image'
-import ContinuWithGoogleImage from './web_light_rd_ctn@1x.png'
+// import Image from 'next/image'
+// import ContinuWithGoogleImage from './web_light_rd_ctn@1x.png'
 
 export default function Auth(props) {
   const [email, setEmail] = useState('');

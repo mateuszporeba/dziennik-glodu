@@ -33,6 +33,23 @@ export default function addictionDiary() {
   const dbRef = ref(getDatabase());
 
   useEffect(() => {
+    console.log(days - 1)
+    // get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth + '/table' + (days-1)))
+    get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth + '/table/' + (days -1)))
+      .then((snapshot) => {
+        console.log(snapshot.val())
+        if (snapshot.exists()) {
+          setIsAnsweringQuestions(false)
+        } else {
+          setIsAnsweringQuestions(true)
+        }
+      })
+  }, [userId]);
+
+
+
+
+  useEffect(() => {
     const tableBodyCheckboxes = []; // Initialize tableBodyCheckboxes as an empty array
 
     setError(false)
@@ -79,53 +96,6 @@ export default function addictionDiary() {
         setError(true)
       });
   }, [userId, dateMonth]);
-
-  // useEffect(() => {
-  //   const tableBodyCheckboxes = []; // Initialize tableBodyCheckboxes as an empty array
-
-  //   setError(false)
-  //   get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth + '/table'))
-  //     .then((snapshot) => {
-  //       if (snapshot.exists()) {
-  //         //console.log(snapshot.val())
-
-  //         const data = snapshot.val();
-  //         const keys = Object.keys(data);
-  //         const missingKeys = [];
-
-  //         for (let i = 0; i < days; i++) {
-  //           if (!keys.includes(i.toString())) {
-  //             missingKeys.push(i);
-  //           } else {
-  //             tableBodyCheckboxes[i] = data[i]; // Add existing data to tableBodyCheckboxes
-  //             checkboxesToSave[i] = data[i]
-  //           }
-  //         }
-
-  //         if (missingKeys.length > 0) {
-  //           for (let i = 0; i < missingKeys.length; i++) {
-  //             tableBodyCheckboxes[missingKeys[i]] = new Array(symptoms.length).fill(0); // Add missing data to tableBodyCheckboxes
-  //           }
-  //         }
-
-  //         if (!keys.includes((days - 1).toString())) {
-  //           checkboxesToSave[(days - 1)] = new Array(symptoms.length).fill(0)
-  //         }
-
-  //         setTableBodyArray(tableBodyCheckboxes)
-
-  //         if (checkboxesToSave.length > 0) {
-  //           setLoading(false); // Update loading state when data is fetched
-  //         }
-  //         //setCheckboxesToExport(checkboxesToSave)
-  //         //console.log('checkboxesToSave.keys():   ' + checkboxesToSave.keys() + '  ' + checkboxesToSave)
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //       setError(true)
-  //     });
-  // }, [userId, dateMonth]);
 
   // table Headers 
   for (let i = 0; i < days; i++) {
@@ -269,7 +239,7 @@ export default function addictionDiary() {
               <p>Brak danych</p>
               <button></button></>
           }
-          <div className={styles.container} id='scrollableDiv'>
+          <div className={styles.containerTable} id='scrollableDiv'>
             <Table striped bordered hover>
 
               <thead>
