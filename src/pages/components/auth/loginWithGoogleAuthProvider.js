@@ -5,9 +5,13 @@ import ContinuWithGoogleImage from './web_light_rd_ctn@1x.png'
 
 import App from '../../../firebase/firebaseConfig'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { ref, set, onValue } from "firebase/database";
+import database from '../../../firebase/firebaseDatabase'
+import { useDispatch } from 'react-redux'
+import { loginUserData } from '../../../store/userSlice'
 
-export default function loginWithGoogleAuthProvider() {
-
+export default function loginWithGoogleAuthProvider(props) {
+  const dispatch = useDispatch()
 
   const loginWithGoogleAccountHandler = async () => {
     const auth = getAuth(App);
@@ -24,6 +28,7 @@ export default function loginWithGoogleAuthProvider() {
         checkUsersDatabase(user_UID)
         dispatch(loginUserData([user.email, user.uid]))
         props.onClose()
+        console.log('loginWithGoogleAccountHandler')
         // IdP data available using getAdditionalUserInfo(result)
 
       }).catch((error) => {
@@ -37,6 +42,22 @@ export default function loginWithGoogleAuthProvider() {
         // ...
         console.error('Login failed:', error);
       })
+  }
+
+  const checkUsersDatabase = (userId) => {
+    const date = (new Date().getFullYear() + '_' + new Date().getMonth()).toString()
+
+    const ThisMonthDatabaseRef = ref(database, 'users/' + userId + '/dziennik-glodu/' + date);
+
+    onValue(ThisMonthDatabaseRef, (snapshot) => {
+      const data = snapshot.exists()
+
+      if (!data) {
+        set(ref(database, 'users/' + userId + '/dziennik-glodu/' + date), {
+          table: { 0: Array.from({ length: 22 }, () => 0) },
+        })
+      }
+    })
   }
 
   return (

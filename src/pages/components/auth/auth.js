@@ -13,14 +13,15 @@ import { loginUserData, logoutUser } from '../../../store/userSlice'
 
 import Modal from '../UI/modal'
 //Login with Google account
+import LoginWithGoogleAuthProvider from './loginWithGoogleAuthProvider';
 import Image from 'next/image'
 import ContinuWithGoogleImage from './web_light_rd_ctn@1x.png'
 
 export default function Auth(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //const [email, setEmail] = useState('poreba.mateusz@gmail.com');
-  //const [password, setPassword] = useState('dupa123');
+  // const [email, setEmail] = useState('poreba.mateusz@gmail.com');
+  // const [password, setPassword] = useState('dupa123');
   const [wrongCredentials, setWrongCredentials] = useState(false)
   const dispatch = useDispatch()
 
@@ -60,27 +61,27 @@ export default function Auth(props) {
 
   //AUTH with google provider
   const loginWithGoogleAccountHandler = async () => {
-      const provider = new GoogleAuthProvider(); // Use 'GoogleAuthProvider' directly
-      provider.setCustomParameters({ prompt: 'select_account' });
-      signInWithPopup(auth, provider)
+    const provider = new GoogleAuthProvider(); // Use 'GoogleAuthProvider' directly
+    provider.setCustomParameters({ prompt: 'select_account' });
+    signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        const token = credential.accessToken;
+        const credential = GoogleAuthProvider.credentialFromResult(result)
+        const token = credential.accessToken
         // The signed-in user info.
-        const user = result.user;
+        const user = result.user
         const user_UID = user.uid.toString()
         checkUsersDatabase(user_UID)
         dispatch(loginUserData([user.email, user.uid]))
         props.onClose()
         // IdP data available using getAdditionalUserInfo(result)
-        
+
       }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
         // The email of the user's account used.
-       // const email = error.customData.email;
+        // const email = error.customData.email;
         // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
@@ -105,7 +106,14 @@ export default function Auth(props) {
   }
 
   //alert("E-mail address not verified! Please check your mailbox")
-
+  //   <button onClick={loginWithGoogleAccountHandler} className={styles.buttonContinueWithGoogle}>
+  //   <Image
+  //     src={ContinuWithGoogleImage}
+  //     width={189}
+  //     height={40}
+  //     alt="Continue with google account"
+  //   ></Image>
+  // </button>
   return (
     <Modal onClose={props.onClose}>
       <div className={styles.container}>
@@ -113,21 +121,16 @@ export default function Auth(props) {
         <input className={wrongCredentials && styles.inputWrongCredentials} type="password" value={password} onChange={handlePasswordChange} onClick={handlePasswordClick} placeholder="Password" />
         <button onClick={loginHandler} className="btn btn-primary btn-sm">Login</button>
         {wrongCredentials && <p>Wrong e-mail or password</p>}
-        <button onClick={loginWithGoogleAccountHandler} className={styles.buttonContinueWithGoogle}>
-          <Image
-            src={ContinuWithGoogleImage}
-            width={189}
-            height={40}
-            alt="Continue with google account"
-          ></Image>
-        </button>
-
-        <button onClick={props.onClose} className={styles.buttonExit}>Exit</button>
+        <div className={styles.buttonContinueWithGoogle}>
+          <LoginWithGoogleAuthProvider onClose={props.onClose} />
+        </div >
+        <div className={styles.containerButtonExit}>
+          <button onClick={props.onClose} className='btn btn-danger btn-sm'>Exit</button>
+        </div>
       </div>
     </Modal >
   );
 };
-
 
 
 

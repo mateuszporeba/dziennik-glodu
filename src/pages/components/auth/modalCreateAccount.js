@@ -64,7 +64,10 @@ export default function createAccount(props) {
         if (errorCode === 'auth/missing-password') setMissingPassword(true)
       })
   }
-
+  //   <div className={styles.signUpContainer}>
+  //   <button onClick={signUpHandler}  className="btn btn-primary btn-sm">Sign up!</button>
+  //   <LoginWithGoogleAuthProvider id={styles.buttonContinueWithGoogle} />
+  // </div>
   return (
     <Modal onClose={props.onClose}>
       <div className={styles.container}>
@@ -75,17 +78,21 @@ export default function createAccount(props) {
             {invalidEmail && <p>Invalid e-mail!</p>}
             <input type="password" value={password} onChange={passwordChangeHandler} placeholder="Password" />
             {missingPassword && <p>Missing password!</p>}
-            <div className={styles.signUpContainer}>
-              <button onClick={signUpHandler}  className="btn btn-primary btn-sm">Sign up!</button>
-              <LoginWithGoogleAuthProvider id={styles.buttonContinueWithGoogle} />
+            <div>
+              <button onClick={signUpHandler} className="btn btn-primary btn-sm">Sign up!</button>
+              <div className={styles.buttonContinueWithGoogle}>
+                <LoginWithGoogleAuthProvider onClose={props.onClose}/>
+              </div>
             </div>
           </> :
           <>
-            <h3>The account has been successfully created</h3>
+            <h3>Account has been successfully created</h3>
             <h4>Verification link has been sent to your e-mail address</h4>
           </>
         }
-        <button onClick={props.onClose} className="btn btn-danger btn-sm">Exit</button>
+        <div className={styles.containerButtonExit}>
+          <button onClick={props.onClose} className='btn btn-danger btn-sm' >Exit</button>
+        </div>
       </div>
     </Modal>
   )
