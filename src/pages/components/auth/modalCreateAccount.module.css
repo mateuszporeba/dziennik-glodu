@@ -33,7 +33,7 @@
 }
 @media (max-width: 500px) {
   .buttonContinueWithGoogle {
-    top: 0;
+    top: 10px;
   }
 }
 .containerButtonExit {
