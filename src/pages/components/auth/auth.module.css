@@ -23,6 +23,12 @@
   /* padding-top: 20px;  */
 }
 
+@media (max-width: 500px) {
+  .buttonContinueWithGoogle {
+    top: 0;
+  }
+}
+
 .inputWrongCredentials {
   border: solid red 5px;
   border-color: red;
