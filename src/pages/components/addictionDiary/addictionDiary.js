@@ -11,6 +11,7 @@ import '../../../store/userSlice'
 import Table from 'react-bootstrap/Table'
 import AddictionDiaryController from './addictionDiaryController';
 import Button from '../layout/button'
+import Loader from '../UI/loader'
 import AddicitonDiaryDailyQuestions from './addicitonDiaryDailyQuestions';
 
 export default function addictionDiary() {
@@ -33,16 +34,31 @@ export default function addictionDiary() {
   const dbRef = ref(getDatabase());
 
   useEffect(() => {
-    console.log(days - 1)
     // get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth + '/table' + (days-1)))
-    get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth + '/table/' + (days -1)))
+    get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth + '/table/' + (days - 1)))
       .then((snapshot) => {
-        console.log(snapshot.val())
         if (snapshot.exists()) {
           setIsAnsweringQuestions(false)
         } else {
           setIsAnsweringQuestions(true)
         }
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+
+    get(child(dbRef, 'users/' + userId + '/dziennik-glodu/'))
+      .then((snapshot) => {
+        //console.log(snapshot.val())
+        availableTables = snapshot.val()
+        snapshot.forEach((table, index) => {
+          availableTables[index] = table
+          console.log(availableTables)
+        });
+
+      })
+      .catch((error) => {
+        console.error(error);
       })
   }, [userId]);
 
@@ -81,7 +97,6 @@ export default function addictionDiary() {
           if (!keys.includes((days - 1).toString())) {
             checkboxesToSave[(days - 1)] = new Array(symptoms.length).fill(0)
           }
-          console.log(tableBodyCheckboxes)
           setTableBodyArray(tableBodyCheckboxes)
 
           if (checkboxesToSave.length > 0) {
@@ -168,7 +183,7 @@ export default function addictionDiary() {
 
         return (
           <tr key={uuidv4()}>
-            <th scope="row" key={uuidv4()}>{symptom}</th>
+            <th scope="row" key={uuidv4()} className={styles.stickySympthoms}>{symptom}</th>
             {checkboxes?.map((check, index,) => (
               <td key={uuidv4()}>
                 {
@@ -244,7 +259,7 @@ export default function addictionDiary() {
 
               <thead>
                 <tr key={uuidv4()}>
-                  <th scope="col" key={uuidv4()} className={styles.stickySympthoms}>Objawy</th>
+                  <th scope="col" key={uuidv4()} className={styles.stickyCorner}>Objawy</th>
                   {tableHeaders}
                 </tr>
               </thead>

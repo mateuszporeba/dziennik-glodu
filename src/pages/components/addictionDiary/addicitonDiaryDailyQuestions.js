@@ -30,16 +30,12 @@ export default function addicitonDiaryDailyQuestions(props) {
     if (currentQuestion < symptoms.length - 1) {
       updateAnswerAtIndex(currentQuestion, 1)
       setCurrentQuestion(currentQuestion + 1);
-      console.log('answersTable[currentQuestion]:  ' + currentQuestion + '   ' + answersTable[currentQuestion])
-      console.log('answersTable all:  ' + answersTable)
     }
   }
   const updateAnswerAtIndex = (index, updatedValue) => {
     const updatedAnswersTable = [...answersTable];
     updatedAnswersTable[index] = updatedValue;
     setAnswersTable(updatedAnswersTable);
-    console.log('answersTable[currentQuestion]:  ' + answersTable[currentQuestion])
-    console.log('answersTable all:  ' + answersTable)
   }
 
 const saveAnswersHandler = () => {
