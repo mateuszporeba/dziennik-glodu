@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import styles from './addictionDiary.module.css'
 import symptomsJSON from './symptoms.json'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
-import { getDatabase, ref, child, get, set } from "firebase/database";
+import { getDatabase, ref, child, get, set } from "firebase/database"
 import database from '../../../firebase/firebaseDatabase'
 import { useSelector } from 'react-redux'
 import '../../../store/userSlice'
 
 import Table from 'react-bootstrap/Table'
-import AddictionDiaryController from './addictionDiaryController';
+import AddictionDiaryController from './addictionDiaryController'
 import Button from '../layout/button'
 import Loader from '../UI/loader'
-import AddicitonDiaryDailyQuestions from './addicitonDiaryDailyQuestions';
+import AddicitonDiaryDailyQuestions from './addicitonDiaryDailyQuestions'
 
 export default function addictionDiary() {
 
@@ -20,9 +20,11 @@ export default function addictionDiary() {
   const symptoms = symptomsJSON.glod_substancji.objawy
   const tableHeaders = []
   const checkboxesToSave = []
+  // const year = new Date().getFullYear()
+  // const month = new Date().getMonth()
   const [days, setDays] = useState(new Date().getDate())
-  const [dateYear, setDateYear] = useState(new Date().getFullYear())
-  const [dateMonth, setDateMonth] = useState(new Date().getMonth())
+  const [year, setYear] = useState(new Date().getFullYear())
+  const [month, setMonth] = useState(new Date().getMonth())
   //const [date_Years_Months, setDate_Years_Months] = useState(dateYears + '_' + dateMonths)
   const [tableBodyArray, setTableBodyArray] = useState([])
   const [loading, setLoading] = useState(true)
@@ -31,11 +33,11 @@ export default function addictionDiary() {
   /////////////////////////////
 
   const userId = useSelector((state) => state.user.uid)
-  const dbRef = ref(getDatabase());
+  const dbRef = ref(getDatabase())
 
   useEffect(() => {
     // get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth + '/table' + (days-1)))
-    get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth + '/table/' + (days - 1)))
+    get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + year + '/' + month + '/table/' + (days - 1)))
       .then((snapshot) => {
         if (snapshot.exists()) {
           setIsAnsweringQuestions(false)
@@ -47,29 +49,16 @@ export default function addictionDiary() {
         console.error(error);
       })
 
-    get(child(dbRef, 'users/' + userId + '/dziennik-glodu/'))
-      .then((snapshot) => {
-        //console.log(snapshot.val())
-        availableTables = snapshot.val()
-        snapshot.forEach((table, index) => {
-          availableTables[index] = table
-          console.log(availableTables)
-        });
-
-      })
-      .catch((error) => {
-        console.error(error);
-      })
   }, [userId]);
 
 
 
 
   useEffect(() => {
-    const tableBodyCheckboxes = []; // Initialize tableBodyCheckboxes as an empty array
+    const tableBodyCheckboxes = [] // Initialize tableBodyCheckboxes as an empty array
 
     setError(false)
-    get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + dateYear + '_' + dateMonth + '/table'))
+    get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + year + '/' + month + '/table'))
       .then((snapshot) => {
         if (snapshot.exists()) {
           //console.log(snapshot.val())
@@ -110,7 +99,7 @@ export default function addictionDiary() {
         console.error(error);
         setError(true)
       });
-  }, [userId, dateMonth]);
+  }, [userId, month, year]);
 
   // table Headers 
   for (let i = 0; i < days; i++) {
@@ -139,7 +128,8 @@ export default function addictionDiary() {
     updatedCheckboxes[days - 1] = DailyArray;
     //console.log(updatedCheckboxes)
     const db = getDatabase()
-    set(ref(db, 'users/' + userId + '/dziennik-glodu/' + new Date().getFullYear() + '_' + new Date().getMonth()), {
+    //set(ref(db, 'users/' + userId + '/dziennik-glodu/' + new Date().getFullYear() + '_' + new Date().getMonth()), {
+    set(ref(db, 'users/' + userId + '/dziennik-glodu/' + year + '/' + month), {
       table: updatedCheckboxes,
     })
     console.log('wykonano onDailyAnswersSaveHandler')
@@ -187,7 +177,7 @@ export default function addictionDiary() {
             {checkboxes?.map((check, index,) => (
               <td key={uuidv4()}>
                 {
-                  (index === checkboxes.length - 1 && dateYear === new Date().getFullYear() && dateMonth === new Date().getMonth()) ?
+                  (index === checkboxes.length - 1 && year === new Date().getFullYear() && month === new Date().getMonth()) ?
                     <input
                       type='checkbox'
                       key={uuidv4()}
@@ -210,24 +200,31 @@ export default function addictionDiary() {
     set(ref(db, 'users/' + userId + '/dziennik-glodu/' + new Date().getFullYear() + '_' + new Date().getMonth()), {
       table: tableBodyArray,
     })
-
-    console.log('wykonano onSaveHandler')
+    alert('Odpowiedzi zostały pomyślnie zmienione')
+    console.log('wykonano zapis')
   }
 
   const onPreviousMonthHandler = () => {
     setLoading(true)
-    setDateMonth(dateMonth - 1)
-    const monthToCalculate = Number(dateMonth - 1)
-    setDays(getDaysInMonth(dateYear, monthToCalculate))
+    setMonth(month - 1)
+    const monthToCalculate = Number(month - 1)
+    setDays(getDaysInMonth(year, monthToCalculate))
     //console.log('dateMonth:  ' + Number(dateMonth + 1))
   }
   const onNextMonthHandler = () => {
     setLoading(true)
-    setDateMonth(dateMonth + 1)
-    const monthToCalculate = Number(dateMonth + 1)
-    setDays(getDaysInMonth(dateYear, monthToCalculate))
-    console.log('dateMonth:  ' + Number(dateMonth + 1))
+    setMonth(month + 1)
+    const monthToCalculate = Number(month + 1)
+    setDays(getDaysInMonth(year, monthToCalculate))
+    console.log('dateMonth:  ' + Number(month + 1))
   }
+
+  const onDiaryControllerChangeDateHandler = (year, month) => {
+    console.log('onDiaryControllerChangeDateHandler' + year + '_' + month)
+    setYear(year)
+    setMonth(month)
+  }
+
   function getDaysInMonth(year, month) {
     // console.log('YeAR!!!!:   ' + year)
     // console.log('month!!!!:   ' + month)
@@ -248,31 +245,37 @@ export default function addictionDiary() {
     <>
       {isAnsweringQuestions ? <AddicitonDiaryDailyQuestions saveAnswers={onDailyAnswersSaveHandler} closeDailyQuestions={() => setIsAnsweringQuestions(!isAnsweringQuestions)} />
         : <>
-          <AddictionDiaryController getPreviousMonth={onPreviousMonthHandler} getNextMonth={onNextMonthHandler} controllersDate={{ dateYears: dateYear, dateMonths: dateMonth }} />
+          <AddictionDiaryController onDiaryControllerChangeDate={onDiaryControllerChangeDateHandler} getPreviousMonth={onPreviousMonthHandler} getNextMonth={onNextMonthHandler} controllersDate={{ dateYears: year, dateMonths: month }} />
           {error &&
             <>
               <p>Brak danych</p>
-              <button></button></>
+              <button></button>
+            </>
           }
-          <div className={styles.containerTable} id='scrollableDiv'>
-            <Table striped bordered hover>
 
-              <thead>
-                <tr key={uuidv4()}>
-                  <th scope="col" key={uuidv4()} className={styles.stickyCorner}>Objawy</th>
-                  {tableHeaders}
-                </tr>
-              </thead>
+          <div className={styles.container}>
 
-              <tbody>
-                {tableBody}
-              </tbody>
+            <div className={styles.containerTable} id='scrollableDiv'>
+              <Table striped bordered hover>
 
-            </Table>
+                <thead>
+                  <tr key={uuidv4()}>
+                    <th scope="col" key={uuidv4()} className={styles.stickyCorner}>Objawy</th>
+                    {tableHeaders}
+                  </tr>
+                </thead>
 
-          </div>
-          <div className={styles.SaveButtonContainer}>
-            <Button onClick={onSaveHandler} description={'Zmień dzisiejsze odpowiedzi'} />
+                <tbody>
+                  {tableBody}
+                </tbody>
+
+              </Table>
+
+            </div>
+            <div className={styles.SaveButtonContainer}>
+              <Button onClick={onSaveHandler} description={'Zmień'} />
+            </div>
+
           </div>
         </>
       }

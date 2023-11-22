@@ -14,6 +14,7 @@ import { loginUserData, logoutUser } from '../../../store/userSlice'
 import Modal from '../UI/modal'
 //Login with Google account
 import LoginWithGoogleAuthProvider from './loginWithGoogleAuthProvider';
+//import checkUsersDatabase from './checkUserDatabase';
 // import Image from 'next/image'
 // import ContinuWithGoogleImage from './web_light_rd_ctn@1x.png'
 
@@ -90,16 +91,25 @@ export default function Auth(props) {
   }
 
   const checkUsersDatabase = (userId) => {
-    const date = (new Date().getFullYear() + '_' + new Date().getMonth()).toString()
+    const year = new Date().getFullYear()
+    const month = new Date().getMonth()
 
-    const ThisMonthDatabaseRef = ref(database, 'users/' + userId + '/dziennik-glodu/' + date);
+
+    const ThisMonthDatabaseRef = ref(database, 'users/' + userId + '/dziennik-glodu/' + year + '/' + month);
+
+    const timestamp = new Date().getTime()
 
     onValue(ThisMonthDatabaseRef, (snapshot) => {
       const data = snapshot.exists()
-
+      console.log('BEFORE IF: checkUsersDatabase')
       if (!data) {
-        set(ref(database, 'users/' + userId + '/dziennik-glodu/' + date), {
+        console.log('checkUsersDatabase')
+        set(ref(database, 'users/' + userId + '/dziennik-glodu/' + + year + '/' + month), {
           table: { 0: Array.from({ length: 22 }, () => 0) },
+        })
+        // Create a new id reference
+        set(ref(database, 'users/' + userId + '/dg-id/' + + year + '/' + month), {
+          ts: timestamp,
         })
       }
     })

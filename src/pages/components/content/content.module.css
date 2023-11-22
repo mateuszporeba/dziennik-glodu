@@ -1,4 +1,4 @@
-.container {
+.containerSection1 {
   position: absolute;
   width: 100%;
   min-width: 320px;
@@ -6,13 +6,14 @@
   height: 100%;
   max-height: fit-content;
   /* top: 100px; */
-  
+
   background-color: lightcyan;
   background-image: url(./book1.jpg);
-  background-position: center; /* Center the background image */
+  background-position: center;
+  /* Center the background image */
 }
 
-.AddicionDiaryContainer{
+.AddicionDiaryContainer {
   display: flex;
   padding-top: 50px;
   justify-content: center;

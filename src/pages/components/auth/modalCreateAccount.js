@@ -32,18 +32,10 @@ export default function createAccount(props) {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-
         // Signed up 
         const user = userCredential.user
         console.log('utworzono użytkownika: ' + user)
         setSuccessfullyCreatedAccount(true)
-        //const User_UID = user.uid
-        //user.sendEmailVerification()
-        console.log('aaaaa')
-        console.log('auth.currentUser:  ' + auth.currentUser)
-
-        console.log('user.emailver:  ' + user.emailVerified)
-
         sendEmailVerification(auth.currentUser)
           .then(() => {
             // Email verification sent!

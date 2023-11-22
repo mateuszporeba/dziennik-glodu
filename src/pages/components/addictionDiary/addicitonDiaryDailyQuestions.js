@@ -38,10 +38,13 @@ export default function addicitonDiaryDailyQuestions(props) {
     setAnswersTable(updatedAnswersTable);
   }
 
-const saveAnswersHandler = () => {
-  props.saveAnswers(answersTable)
-  props.closeDailyQuestions()
-}
+  const saveAnswersHandler = () => {
+    props.saveAnswers(answersTable)
+    setTimeout(() => {
+      props.closeDailyQuestions()
+    }, 500);
+
+  }
 
   const symptomsSum = answersTable.reduce((partialSum, a) => partialSum + a, 0)
 
@@ -56,13 +59,13 @@ const saveAnswersHandler = () => {
         ></Image>
       </button>
       <h2>{symptoms[currentQuestion]}</h2>
-      {(currentQuestion === symptoms.length-1) &&
+      {(currentQuestion === symptoms.length - 1) &&
         <>
           <h1>{symptomsSum}</h1>
           <button className={styles.button} onClick={saveAnswersHandler}>ZAMKNIJ</button>
         </>}
       <div className={styles.buttonContainer}>
-        {(currentQuestion !== symptoms.length-1) &&
+        {(currentQuestion !== symptoms.length - 1) &&
           <>
             <button onClick={answerYesHandler} className={(answersTable[currentQuestion] === 1) ? styles.buttonAnswered : styles.button}>TAK</button>
             <button onClick={answerNoHandler} className={(answersTable[currentQuestion] === 0) ? styles.buttonAnswered : styles.button}>NIE</button>

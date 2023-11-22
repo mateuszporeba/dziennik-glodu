@@ -24,9 +24,11 @@ export default function content() {
 
 
   return (
-    <div className={styles.container}>
-      <div className={styles.AddicionDiaryContainer}>
-        {userIsLoggedIn && <AddicionDiary />}
+    <div>
+      <div className={styles.containerSection1}>
+        <div className={styles.AddicionDiaryContainer}>
+          {userIsLoggedIn && <AddicionDiary />}
+        </div>
       </div>
     </div>
   )

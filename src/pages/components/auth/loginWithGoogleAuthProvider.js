@@ -5,7 +5,7 @@ import ContinuWithGoogleImage from './web_light_rd_ctn@1x.png'
 
 import App from '../../../firebase/firebaseConfig'
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { ref, set, onValue } from "firebase/database";
+import { ref, set, onValue, push } from "firebase/database";
 import database from '../../../firebase/firebaseDatabase'
 import { useDispatch } from 'react-redux'
 import { loginUserData } from '../../../store/userSlice'
@@ -45,19 +45,48 @@ export default function loginWithGoogleAuthProvider(props) {
   }
 
   const checkUsersDatabase = (userId) => {
-    const date = (new Date().getFullYear() + '_' + new Date().getMonth()).toString()
+    const year = new Date().getFullYear()
+    const month = new Date().getMonth()
 
-    const ThisMonthDatabaseRef = ref(database, 'users/' + userId + '/dziennik-glodu/' + date);
+
+    const ThisMonthDatabaseRef = ref(database, 'users/' + userId + '/dziennik-glodu/' + year + '/' + month);
+
+    const timestamp = new Date().getTime()
 
     onValue(ThisMonthDatabaseRef, (snapshot) => {
       const data = snapshot.exists()
-
+      console.log('BEFORE IF: checkUsersDatabase')
       if (!data) {
-        set(ref(database, 'users/' + userId + '/dziennik-glodu/' + date), {
+        console.log('checkUsersDatabase')
+        set(ref(database, 'users/' + userId + '/dziennik-glodu/' + + year + '/' + month), {
           table: { 0: Array.from({ length: 22 }, () => 0) },
+        })
+        // Create a new id reference
+        set(ref(database, 'users/' + userId + '/dg-id/' + + year + '/' + month), {
+          ts: timestamp,
         })
       }
     })
+
+        //const date = (new Date().getFullYear() + '_' + new Date().getMonth()).toString()
+    // const ThisMonthDatabaseRef = ref(database, 'users/' + userId + '/dziennik-glodu/' + date);
+
+    // const timestamp = new Date().getTime()
+
+    // onValue(ThisMonthDatabaseRef, (snapshot) => {
+    //   const data = snapshot.exists()
+    //   console.log('BEFORE IF: checkUsersDatabase')
+    //   if (!data) {
+    //     console.log('checkUsersDatabase')
+    //     set(ref(database, 'users/' + userId + '/dziennik-glodu/' + date), {
+    //       table: { 0: Array.from({ length: 22 }, () => 0) },
+    //     })
+    //     // Create a new id reference
+    //     set(ref(database, 'users/' + userId + '/dg-id/' + date), {
+    //       ts: timestamp,
+    //     })
+    //   }
+    // })
   }
 
   return (
