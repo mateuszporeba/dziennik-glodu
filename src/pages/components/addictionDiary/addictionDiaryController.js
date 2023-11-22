@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Dropdown from 'react-bootstrap/Dropdown'
 
-import { Row, Col, NavDropdown, Container, Navbar, Nav } from "react-bootstrap";
-import { DropdownSubmenu, NavDropdownMenu } from "react-bootstrap-submenu";
+import { Row, Col, NavDropdown, Container, Navbar, Nav } from "react-bootstrap"
+import { DropdownSubmenu, NavDropdownMenu } from "react-bootstrap-submenu"
 
 import styles from './addictionDiaryController.module.css'
 
@@ -12,15 +12,17 @@ import { useSelector } from 'react-redux'
 import '../../../store/userSlice'
 import { v4 as uuidv4 } from 'uuid'
 
+import styled from 'styled-components'
+
 export default function addictionDiaryController(props) {
 
   const dbRef = ref(getDatabase())
   const userId = useSelector((state) => state.user.uid)
 
-  const [availableDiary, setavailableDiary] = useState();
+  const [availableDiary, setavailableDiary] = useState()
   const [showNextMonthButton, setShowNextMonthButton] = useState(false)
-  const { dateYears, dateMonths } = props.controllersDate;
-  const [isLoadinData, setIsloadinData] = useState(true);
+  const { dateYears, dateMonths } = props.controllersDate
+  const [isLoadinData, setIsloadinData] = useState(true)
 
   const year = new Date().getFullYear()
 
@@ -53,6 +55,14 @@ export default function addictionDiaryController(props) {
     props.onDiaryControllerChangeDate(year, month)
   }
 
+
+  const StyledNavDropdown = styled(NavDropdownMenu)`
+  .dropdown-menu{
+    background-color:red;
+    min-width:2rem;
+  }
+`;
+  // <NavDropdownMenu title={year} className={styles.dropdownMenu} id="collasible-nav-dropdown">
   return (
     <div className={styles.container}>
 
@@ -65,12 +75,12 @@ export default function addictionDiaryController(props) {
             {!isLoadinData &&
               Object.keys(availableDiary).map((year) => (
                 <Nav className="me-auto">
-                  <NavDropdownMenu title={year} className={styles.dropdownMenu} id="collasible-nav-dropdown">
+                  <StyledNavDropdown title={year} >
                     {
                       Object.keys(availableDiary[year]).map((month) => (
                         <NavDropdown.Item onClick={() => onTableChangeHandler(year, month)} as="button" className={styles.dropdownItemMonth}>{Number(month) + 1}</NavDropdown.Item>
                       ))}
-                  </NavDropdownMenu>
+                  </StyledNavDropdown>
                 </Nav>
               ))
             }
