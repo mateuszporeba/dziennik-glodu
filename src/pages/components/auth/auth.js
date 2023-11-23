@@ -38,16 +38,16 @@ export default function Auth(props) {
   //   await setPersistence(auth, browserLocalPersistence);
   // })();
   useEffect(() => {
-    const storedToken = localStorage.getItem("loginToken")
-    if (storedToken) {
-      // Token exists, you can use it in your application logic
-      console.log("Token found:", storedToken);
-      console.log(storedToken)
-      // Perform actions based on the token, such as auto-login
-    } else {
-      // Token does not exist, handle accordingly (e.g., redirect to login)
-      console.log("Token not found");
-    }
+    // const storedToken = localStorage.getItem("loginToken")
+    // if (storedToken) {
+    //   // Token exists, you can use it in your application logic
+    //   console.log("Token found:", storedToken);
+    //   console.log(storedToken)
+    //   // Perform actions based on the token, such as auto-login
+    // } else {
+    //   // Token does not exist, handle accordingly (e.g., redirect to login)
+    //   console.log("Token not found");
+    // }
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
