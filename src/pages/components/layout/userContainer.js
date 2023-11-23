@@ -6,9 +6,9 @@ import LogOut from '../auth/logout'
 import ModalResetPassword from '../auth/modalResetPassword'
 import ModalCreateAccount from '../auth/modalCreateAccount'
 import { useSelector, useDispatch } from 'react-redux'
-import '../../../store/userSlice'
+import { loginUserData } from '../../../store/userSlice'
 //
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail, onAuthStateChanged } from "firebase/auth";
 import Modal from '../UI/modal'
 import Button from '../layout/button'
 //
@@ -21,10 +21,18 @@ export default function loginContainer() {
 
   const dispatch = useDispatch()
 
-  const test = () => {
-    console.log(user)
-    //console.log('status z login Container:   ' + useSelector((state) => state.user.value))
-  }
+  const auth = getAuth()
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(loginUserData([user.email, user.uid]))
+        setUserIsLoggedin(true)
+      } else {
+      }
+    })
+  }, [])
+
   useEffect(() => {
     //if (user !== null || user?.length > 0) {
     if (user?.length > 0) {
@@ -32,8 +40,6 @@ export default function loginContainer() {
     } else {
       setUserIsLoggedin(false)
     }
-
-
   }, [user]);
 
   //console.log(userIsLoggedin)
@@ -62,9 +68,9 @@ export default function loginContainer() {
     <div className={styles.container}>
       {!userIsLoggedin ? <>
         <div >
-          <Button onClick={showLoginHandler} description={'Zaloguj się'}/>
-          <Button onClick={showCreateAccountHandler} description={'Zarejestruj się'}/>
-          <Button onClick={showResetPasswordHandler} description={'Zapomniałeś hasła?'}/>
+          <Button onClick={showLoginHandler} description={'Zaloguj się'} />
+          <Button onClick={showCreateAccountHandler} description={'Zarejestruj się'} />
+          <Button onClick={showResetPasswordHandler} description={'Zapomniałeś hasła?'} />
         </div>
       </>
         :

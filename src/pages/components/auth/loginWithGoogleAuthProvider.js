@@ -4,24 +4,29 @@ import Image from 'next/image'
 import ContinuWithGoogleImage from './web_light_rd_ctn@1x.png'
 
 import App from '../../../firebase/firebaseConfig'
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider, browserLocalPersistence, setPersistence, onAuthStateChanged } from "firebase/auth";
 import { ref, set, onValue, push } from "firebase/database";
 import database from '../../../firebase/firebaseDatabase'
 import { useDispatch } from 'react-redux'
 import { loginUserData } from '../../../store/userSlice'
 
 export default function loginWithGoogleAuthProvider(props) {
+  const auth = getAuth(App);
   const dispatch = useDispatch()
 
   const loginWithGoogleAccountHandler = async () => {
-    const auth = getAuth(App);
+
     const provider = new GoogleAuthProvider(); // Use 'GoogleAuthProvider' directly
     provider.setCustomParameters({ prompt: 'select_account' });
     signInWithPopup(auth, provider)
       .then((result) => {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
+
         const token = credential.accessToken;
+        // Save the token to localStorage
+        localStorage.setItem("loginToken", token)
+
         // The signed-in user info.
         const user = result.user;
         const user_UID = user.uid.toString()
@@ -29,6 +34,7 @@ export default function loginWithGoogleAuthProvider(props) {
         dispatch(loginUserData([user.email, user.uid]))
         props.onClose()
         console.log('loginWithGoogleAccountHandler')
+        console.log('token  ' + token)
         // IdP data available using getAdditionalUserInfo(result)
 
       }).catch((error) => {
@@ -43,6 +49,8 @@ export default function loginWithGoogleAuthProvider(props) {
         console.error('Login failed:', error);
       })
   }
+
+
 
   const checkUsersDatabase = (userId) => {
     const year = new Date().getFullYear()
@@ -68,7 +76,7 @@ export default function loginWithGoogleAuthProvider(props) {
       }
     })
 
-        //const date = (new Date().getFullYear() + '_' + new Date().getMonth()).toString()
+    //const date = (new Date().getFullYear() + '_' + new Date().getMonth()).toString()
     // const ThisMonthDatabaseRef = ref(database, 'users/' + userId + '/dziennik-glodu/' + date);
 
     // const timestamp = new Date().getTime()

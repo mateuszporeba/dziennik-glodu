@@ -1,9 +1,9 @@
 // Auth.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './auth.module.css'
 //auth
 import App from '../../../firebase/firebaseConfig'
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithCustomToken, signOut, browserLocalPersistence, setPersistence, onAuthStateChanged } from "firebase/auth";
 //db
 import { ref, add, push, set, get, onValue } from "firebase/database";
 import database from '../../../firebase/firebaseDatabase'
@@ -34,7 +34,67 @@ export default function Auth(props) {
   const handlePasswordClick = () => setWrongCredentials(false)
 
   const auth = getAuth(App);
+  // (async () => {
+  //   await setPersistence(auth, browserLocalPersistence);
+  // })();
+  useEffect(() => {
+    const storedToken = localStorage.getItem("loginToken")
+    if (storedToken) {
+      // Token exists, you can use it in your application logic
+      console.log("Token found:", storedToken);
+      console.log(storedToken)
+      // Perform actions based on the token, such as auto-login
+    } else {
+      // Token does not exist, handle accordingly (e.g., redirect to login)
+      console.log("Token not found");
+    }
 
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log('onAuthStateChanged' + user)
+        checkUsersDatabase(user.uid)
+        dispatch(loginUserData([user.email, user.uid]))
+        props.onClose()
+      } else {
+      }
+    });
+
+
+    signInWithCustomToken(auth, storedToken)
+      .then((userCredential) => {
+        // Signed in
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        var user = userCredential.user
+        console.log("user.emailVerified  :" + user.emailVerified)
+        if (user.emailVerified) {
+          const user_UID = user.uid.toString()
+          checkUsersDatabase(user_UID)
+          dispatch(loginUserData([user.email, user.uid]))
+          props.onClose()
+        }
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+      });
+  }, []);
+
+  setPersistence(auth, browserLocalPersistence)
+    .then(() => {
+      // Existing and future Auth states are now persisted in the current
+      // session only. Closing the window would clear any existing state even
+      // if a user forgets to sign out.
+      // ...
+      // New sign-in will be persisted with session persistence.
+      console.log('usta3wione persistance local browser!')
+      return signInWithEmailAndPassword(auth, email, password);
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+    });
   const loginHandler = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -60,40 +120,9 @@ export default function Auth(props) {
       })
   }
 
-  //AUTH with google provider
-  const loginWithGoogleAccountHandler = async () => {
-    const provider = new GoogleAuthProvider(); // Use 'GoogleAuthProvider' directly
-    provider.setCustomParameters({ prompt: 'select_account' });
-    signInWithPopup(auth, provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const credential = GoogleAuthProvider.credentialFromResult(result)
-        const token = credential.accessToken
-        // The signed-in user info.
-        const user = result.user
-        const user_UID = user.uid.toString()
-        checkUsersDatabase(user_UID)
-        dispatch(loginUserData([user.email, user.uid]))
-        props.onClose()
-        // IdP data available using getAdditionalUserInfo(result)
-
-      }).catch((error) => {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        // const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
-        console.error('Login failed:', error);
-      })
-  }
-
   const checkUsersDatabase = (userId) => {
     const year = new Date().getFullYear()
     const month = new Date().getMonth()
-
 
     const ThisMonthDatabaseRef = ref(database, 'users/' + userId + '/dziennik-glodu/' + year + '/' + month);
 

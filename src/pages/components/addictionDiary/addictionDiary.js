@@ -27,7 +27,7 @@ export default function addictionDiary() {
   const [month, setMonth] = useState(new Date().getMonth())
   //const [date_Years_Months, setDate_Years_Months] = useState(dateYears + '_' + dateMonths)
   const [tableBodyArray, setTableBodyArray] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(false);
   const [isAnsweringQuestions, setIsAnsweringQuestions] = useState(true)
   /////////////////////////////
@@ -56,6 +56,7 @@ export default function addictionDiary() {
 
   useEffect(() => {
     const tableBodyCheckboxes = [] // Initialize tableBodyCheckboxes as an empty array
+
 
     setError(false)
     get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + year + '/' + month + '/table'))
@@ -89,7 +90,7 @@ export default function addictionDiary() {
           setTableBodyArray(tableBodyCheckboxes)
 
           if (checkboxesToSave.length > 0) {
-            setLoading(false); // Update loading state when data is fetched
+            setIsLoading(false); // Update loading state when data is fetched
           }
           //setCheckboxesToExport(checkboxesToSave)
           //console.log('checkboxesToSave.keys():   ' + checkboxesToSave.keys() + '  ' + checkboxesToSave)
@@ -138,7 +139,7 @@ export default function addictionDiary() {
   };
 
   //<p>Is Loading!!!</p>
-  const tableBody = loading ? (
+  const tableBody = isLoading ? (
     console.log('loading')
   ) :
     (
@@ -195,7 +196,6 @@ export default function addictionDiary() {
     )
 
   const onSaveHandler = () => {
-
     const db = getDatabase()
     set(ref(db, 'users/' + userId + '/dziennik-glodu/' + new Date().getFullYear() + '_' + new Date().getMonth()), {
       table: tableBodyArray,
@@ -205,14 +205,14 @@ export default function addictionDiary() {
   }
 
   const onPreviousMonthHandler = () => {
-    setLoading(true)
+    setIsLoading(true)
     setMonth(month - 1)
     const monthToCalculate = Number(month - 1)
     setDays(getDaysInMonth(year, monthToCalculate))
     //console.log('dateMonth:  ' + Number(dateMonth + 1))
   }
   const onNextMonthHandler = () => {
-    setLoading(true)
+    setIsLoading(true)
     setMonth(month + 1)
     const monthToCalculate = Number(month + 1)
     setDays(getDaysInMonth(year, monthToCalculate))
@@ -220,15 +220,14 @@ export default function addictionDiary() {
   }
 
   const onDiaryControllerChangeDateHandler = (year, month) => {
+    setIsLoading(true)
     console.log('onDiaryControllerChangeDateHandler' + year + '_' + month)
     setYear(year)
     setMonth(month)
+    setDays(getDaysInMonth(year, month))
   }
 
   function getDaysInMonth(year, month) {
-    // console.log('YeAR!!!!:   ' + year)
-    // console.log('month!!!!:   ' + month)
-
     if (year === new Date().getFullYear() && month === new Date().getMonth()) {
       return new Date().getDate()
     } else {
@@ -237,9 +236,10 @@ export default function addictionDiary() {
       const date = new Date(year, month, 0);
       // Get the number of days in the month using the Date object
       console.log('DATA!!!!:    ' + date.getDate())
-      return date.getDate() + 1;
+      return date.getDate() + 1
     }
   }
+  //getDaysInMonth(2023, 10)
   //controllersDate={dateYears + '-' + Number(dateMonths + 1)} />
   return (
     <>

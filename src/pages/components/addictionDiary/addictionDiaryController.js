@@ -58,7 +58,6 @@ export default function addictionDiaryController(props) {
 
   const StyledNavDropdown = styled(NavDropdownMenu)`
   .dropdown-menu{
-    background-color:red;
     min-width:2rem;
   }
 `;
@@ -66,7 +65,7 @@ export default function addictionDiaryController(props) {
   return (
     <div className={styles.container}>
 
-      <Navbar bg="dark" expand="sm" variant="dark">
+      <Navbar bg="dark" expand="lg" variant="dark">
         <Container>
           <Navbar.Brand href="#home"></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
