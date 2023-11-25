@@ -244,7 +244,8 @@ export default function addictionDiary() {
   return (
     <>
       {isAnsweringQuestions ? <AddicitonDiaryDailyQuestions saveAnswers={onDailyAnswersSaveHandler} closeDailyQuestions={() => setIsAnsweringQuestions(!isAnsweringQuestions)} />
-        : <>
+        :
+        <div className={styles.container}>
           <AddictionDiaryController onDiaryControllerChangeDate={onDiaryControllerChangeDateHandler} getPreviousMonth={onPreviousMonthHandler} getNextMonth={onNextMonthHandler} controllersDate={{ dateYears: year, dateMonths: month }} />
           {error &&
             <>
@@ -253,31 +254,27 @@ export default function addictionDiary() {
             </>
           }
 
-          <div className={styles.container}>
+          <div className={styles.containerTable} id='scrollableDiv'>
+            <Table striped bordered hover>
 
-            <div className={styles.containerTable} id='scrollableDiv'>
-              <Table striped bordered hover>
+              <thead>
+                <tr key={uuidv4()}>
+                  <th scope="col" key={uuidv4()} className={styles.stickyCorner}>Objawy</th>
+                  {tableHeaders}
+                </tr>
+              </thead>
 
-                <thead>
-                  <tr key={uuidv4()}>
-                    <th scope="col" key={uuidv4()} className={styles.stickyCorner}>Objawy</th>
-                    {tableHeaders}
-                  </tr>
-                </thead>
+              <tbody>
+                {tableBody}
+              </tbody>
 
-                <tbody>
-                  {tableBody}
-                </tbody>
-
-              </Table>
-
-            </div>
-            <div className={styles.SaveButtonContainer}>
-              <Button onClick={onSaveHandler} description={'Zmień'} />
-            </div>
+            </Table>
 
           </div>
-        </>
+          <div className={styles.SaveButtonContainer}>
+            <Button onClick={onSaveHandler} description={'Zmień'} />
+          </div>
+        </div>
       }
     </>
   )

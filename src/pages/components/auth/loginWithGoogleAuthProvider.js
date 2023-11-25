@@ -34,7 +34,7 @@ export default function loginWithGoogleAuthProvider(props) {
         dispatch(loginUserData([user.email, user.uid]))
         props.onClose()
         console.log('loginWithGoogleAccountHandler')
-        console.log('token  ' + token)
+        //console.log('token  ' + token)
         // IdP data available using getAdditionalUserInfo(result)
 
       }).catch((error) => {

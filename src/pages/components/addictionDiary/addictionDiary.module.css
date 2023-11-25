@@ -1,37 +1,46 @@
-.container{
+.container {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   max-width: 90%;
 }
+
 .containerTable {
   position: relative;
-  top: 140px;
+  margin-top: 140px;
+  /* max-width: 80%; */
   max-width: 80%;
   max-height: 38rem;
   overflow: auto;
 }
 
 .SaveButtonContainer {
-position: relative;
-top: 100px;
-left: 49%;
+  position: absolute;
+  right: 25%;
+  top: 50rem;
+  /* position: relative; */
+  /* top: 100px; */
+  /* left: 49%; */
 }
+
 @media (max-width: 500px) {
+  .containerTable {
+    max-width: 100%;
+  }
+
   .SaveButtonContainer {
-    position: relative;
-    left: 0;
-    top: 120px;
+    right: 0;
     /* padding: 0 25px; */
   }
 }
+
 /* .container::-webkit-scrollbar {} */
 
 .container th[scope=row] {
   min-width: 200px;
   position: sticky;
-  
+
   left: 0;
   z-index: 0;
   background-color: hsl(0, 0%, 100%);
@@ -45,7 +54,8 @@ left: 49%;
 
   background-color: whitesmoke;
 }
-.stickyCorner{
+
+.stickyCorner {
   position: sticky;
   left: 0;
   top: 0;
@@ -81,7 +91,7 @@ left: 49%;
   height: 50rem;
   width: 80%;
   overflow: auto;
-  
+
 }
 
 .topHeaders {

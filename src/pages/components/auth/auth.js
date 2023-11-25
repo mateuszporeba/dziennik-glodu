@@ -37,7 +37,8 @@ export default function Auth(props) {
   // (async () => {
   //   await setPersistence(auth, browserLocalPersistence);
   // })();
-  useEffect(() => {
+
+  // useEffect(() => {
     // const storedToken = localStorage.getItem("loginToken")
     // if (storedToken) {
     //   // Token exists, you can use it in your application logic
@@ -49,36 +50,36 @@ export default function Auth(props) {
     //   console.log("Token not found");
     // }
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log('onAuthStateChanged' + user)
-        checkUsersDatabase(user.uid)
-        dispatch(loginUserData([user.email, user.uid]))
-        props.onClose()
-      } else {
-      }
-    });
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       console.log('onAuthStateChanged' + user)
+  //       checkUsersDatabase(user.uid)
+  //       dispatch(loginUserData([user.email, user.uid]))
+  //       props.onClose()
+  //     } else {
+  //     }
+  //   });
 
 
-    signInWithCustomToken(auth, storedToken)
-      .then((userCredential) => {
-        // Signed in
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        var user = userCredential.user
-        console.log("user.emailVerified  :" + user.emailVerified)
-        if (user.emailVerified) {
-          const user_UID = user.uid.toString()
-          checkUsersDatabase(user_UID)
-          dispatch(loginUserData([user.email, user.uid]))
-          props.onClose()
-        }
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
-      });
-  }, []);
+  //   signInWithCustomToken(auth, storedToken)
+  //     .then((userCredential) => {
+  //       // Signed in
+  //       console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+  //       var user = userCredential.user
+  //       console.log("user.emailVerified  :" + user.emailVerified)
+  //       if (user.emailVerified) {
+  //         const user_UID = user.uid.toString()
+  //         checkUsersDatabase(user_UID)
+  //         dispatch(loginUserData([user.email, user.uid]))
+  //         props.onClose()
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       var errorCode = error.code;
+  //       var errorMessage = error.message;
+  //       // ...
+  //     });
+  // }, []);
 
   setPersistence(auth, browserLocalPersistence)
     .then(() => {
