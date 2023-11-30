@@ -3,7 +3,7 @@ import styles from './addictionDiary.module.css'
 import symptomsJSON from './symptoms.json'
 import { v4 as uuidv4 } from 'uuid'
 
-import { getDatabase, ref, child, get, set } from "firebase/database"
+import { getDatabase, ref, child, get, set, onValue } from "firebase/database"
 import database from '../../../firebase/firebaseDatabase'
 import { useSelector } from 'react-redux'
 import '../../../store/userSlice'
@@ -51,16 +51,13 @@ export default function addictionDiary() {
 
   }, [userId]);
 
-
-
-
+  ///////////////////////////////
   useEffect(() => {
     const tableBodyCheckboxes = [] // Initialize tableBodyCheckboxes as an empty array
 
-
     setError(false)
-    get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + year + '/' + month + '/table'))
-      .then((snapshot) => {
+    onValue(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + year + '/' + month + '/table')
+      ,(snapshot) => {
         if (snapshot.exists()) {
           //console.log(snapshot.val())
 
@@ -96,11 +93,55 @@ export default function addictionDiary() {
           //console.log('checkboxesToSave.keys():   ' + checkboxesToSave.keys() + '  ' + checkboxesToSave)
         }
       })
-      .catch((error) => {
-        console.error(error);
-        setError(true)
-      });
   }, [userId, month, year]);
+  ////////////////////////////////////////
+
+  // useEffect(() => {
+  //   const tableBodyCheckboxes = [] // Initialize tableBodyCheckboxes as an empty array
+
+  //   setError(false)
+  //   get(child(dbRef, 'users/' + userId + '/dziennik-glodu/' + year + '/' + month + '/table'))
+  //     .then((snapshot) => {
+  //       if (snapshot.exists()) {
+  //         //console.log(snapshot.val())
+
+  //         const data = snapshot.val();
+  //         const keys = Object.keys(data);
+  //         const missingKeys = [];
+
+  //         for (let i = 0; i < days; i++) {
+  //           if (!keys.includes(i.toString())) {
+  //             missingKeys.push(i);
+  //           } else {
+  //             tableBodyCheckboxes[i] = data[i]; // Add existing data to tableBodyCheckboxes
+  //             checkboxesToSave[i] = data[i]
+  //           }
+  //         }
+
+  //         if (missingKeys.length > 0) {
+  //           for (let i = 0; i < missingKeys.length; i++) {
+  //             //tableBodyCheckboxes[missingKeys[i]] = new Array(symptoms.length).fill(0); // Add missing data to tableBodyCheckboxes
+  //             tableBodyCheckboxes[missingKeys[i]] = []
+  //           }
+  //         }
+
+  //         if (!keys.includes((days - 1).toString())) {
+  //           checkboxesToSave[(days - 1)] = new Array(symptoms.length).fill(0)
+  //         }
+  //         setTableBodyArray(tableBodyCheckboxes)
+
+  //         if (checkboxesToSave.length > 0) {
+  //           setIsLoading(false); // Update loading state when data is fetched
+  //         }
+  //         //setCheckboxesToExport(checkboxesToSave)
+  //         //console.log('checkboxesToSave.keys():   ' + checkboxesToSave.keys() + '  ' + checkboxesToSave)
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //       setError(true)
+  //     });
+  // }, [userId, month, year]);
 
   // table Headers 
   for (let i = 0; i < days; i++) {
