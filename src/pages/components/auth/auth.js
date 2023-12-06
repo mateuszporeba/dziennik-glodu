@@ -10,7 +10,10 @@ import database from '../../../firebase/firebaseDatabase'
 //redux
 import { useSelector, useDispatch } from 'react-redux'
 import { loginUserData, logoutUser } from '../../../store/userSlice'
-
+//image
+import Image from 'next/image'
+import AlertImage from './alert.png'
+//
 import Modal from '../UI/modal'
 //Login with Google account
 import LoginWithGoogleAuthProvider from './loginWithGoogleAuthProvider';
@@ -19,10 +22,10 @@ import LoginWithGoogleAuthProvider from './loginWithGoogleAuthProvider';
 // import ContinuWithGoogleImage from './web_light_rd_ctn@1x.png'
 
 export default function Auth(props) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  // const [email, setEmail] = useState('poreba.mateusz@gmail.com');
-  // const [password, setPassword] = useState('dupa123');
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('poreba.mateusz@gmail.com');
+  const [password, setPassword] = useState('dupa123');
   const [wrongCredentials, setWrongCredentials] = useState(false)
   const dispatch = useDispatch()
 
@@ -39,16 +42,16 @@ export default function Auth(props) {
   // })();
 
   // useEffect(() => {
-    // const storedToken = localStorage.getItem("loginToken")
-    // if (storedToken) {
-    //   // Token exists, you can use it in your application logic
-    //   console.log("Token found:", storedToken);
-    //   console.log(storedToken)
-    //   // Perform actions based on the token, such as auto-login
-    // } else {
-    //   // Token does not exist, handle accordingly (e.g., redirect to login)
-    //   console.log("Token not found");
-    // }
+  // const storedToken = localStorage.getItem("loginToken")
+  // if (storedToken) {
+  //   // Token exists, you can use it in your application logic
+  //   console.log("Token found:", storedToken);
+  //   console.log(storedToken)
+  //   // Perform actions based on the token, such as auto-login
+  // } else {
+  //   // Token does not exist, handle accordingly (e.g., redirect to login)
+  //   console.log("Token not found");
+  // }
 
   //   onAuthStateChanged(auth, (user) => {
   //     if (user) {
@@ -93,7 +96,7 @@ export default function Auth(props) {
       const errorCode = error.code;
       const errorMessage = error.message;
     });
-    
+
   const loginHandler = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -158,7 +161,16 @@ export default function Auth(props) {
         <input className={wrongCredentials && styles.inputWrongCredentials} type="email" value={email} onChange={handleEmailChange} onClick={handleEmailClick} placeholder="E-mail" />
         <input className={wrongCredentials && styles.inputWrongCredentials} type="password" value={password} onChange={handlePasswordChange} onClick={handlePasswordClick} placeholder="Password" />
         <button onClick={loginHandler} className="btn btn-primary btn-sm">Login</button>
-        {wrongCredentials && <p>Wrong e-mail or password</p>}
+        {wrongCredentials &&
+          <div className={styles.wrongCredentialsInfoContainer}>
+            <Image
+              src={AlertImage}
+              width={30}
+              height={30}
+              alt="alert"
+            ></Image>
+            <p>Wrong e-mail or password</p>
+          </div>}
         <div className={styles.buttonContinueWithGoogle}>
           <LoginWithGoogleAuthProvider onClose={props.onClose} />
         </div >
