@@ -313,7 +313,7 @@ export default function addictionDiary() {
 
           </div>
           <div className={styles.SaveButtonContainer}>
-            <Button onClick={onSaveHandler} description={'Zmień'} />
+            <Button onClick={onSaveHandler} description={'Zaktualizuj'} />
           </div>
         </div>
       }
