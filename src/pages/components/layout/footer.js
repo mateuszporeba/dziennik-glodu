@@ -5,7 +5,7 @@ import Link from 'next/link';
 export default function footer() {
   return (
     <div className={styles.footer}>
-      <p>Znajdz meeting</p>
+      <p>Znajdz Mityng</p>
       <dl>
         <dt>Spis Mityngów AA</dt>
         <dd><Link href="https://spis.aa.org.pl/index.php/meetings/?tsml-day=any&tsml-mode=me" target='blank'>Znajdz Mityng AA</Link></dd>
