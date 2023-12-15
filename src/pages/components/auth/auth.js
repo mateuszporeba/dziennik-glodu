@@ -29,27 +29,42 @@ export default function Auth(props) {
   const [wrongCredentials, setWrongCredentials] = useState(false)
   const dispatch = useDispatch()
 
-  const handleEmailChange = (e) => setEmail(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value)
+    setWrongCredentials(false)
+  }
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value)
+    setWrongCredentials(false)
+  }
 
 
   const handleEmailClick = () => setWrongCredentials(false)
   const handlePasswordClick = () => setWrongCredentials(false)
 
   const auth = getAuth(App);
-  
-  setPersistence(auth, browserLocalPersistence)
-    .then(() => {
-      // ...
-      // New sign-in will be persisted with session persistence.
-      console.log('ustawione persistance local browser!')
-      return signInWithEmailAndPassword(auth, email, password);
-    })
-    .catch((error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+
+  useEffect(() => {
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        // ...
+        // New sign-in will be persisted with session persistence.
+        console.log('ustawione persistance local browser!')
+        try {
+          return signInWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+          //console.log(error)
+        }
+
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+  }, []);
+
+
 
   const loginHandler = () => {
     signInWithEmailAndPassword(auth, email, password)
@@ -135,43 +150,3 @@ export default function Auth(props) {
     </Modal >
   );
 };
-
-
-
-
-
-
-// // Auth.js
-// import React, { useState } from 'react';
-// import firebase from '../firebase/firebaseConfig'
-
-// const Auth = () => {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-
-//   const handleEmailChange = (e) => setEmail(e.target.value);
-//   const handlePasswordChange = (e) => setPassword(e.target.value);
-
-//   const handleLogin = () => {
-//     firebase.auth().signInWithEmailAndPassword(email, password)
-//       .then((userCredential) => {
-//         // Handle successful login
-//         const user = userCredential.user;
-//         console.log('Logged in as:', user);
-//       })
-//       .catch((error) => {
-//         // Handle login error
-//         console.error('Login failed:', error);
-//       });
-//   };
-
-//   return (
-//     <div>
-//       <input type="email" value={email} onChange={handleEmailChange} placeholder="Email" />
-//       <input type="password" value={password} onChange={handlePasswordChange} placeholder="Password" />
-//       <button onClick={handleLogin}>Login</button>
-//     </div>
-//   );
-// };
-
-// export default Auth;
