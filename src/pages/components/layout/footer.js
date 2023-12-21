@@ -10,7 +10,7 @@ export default function footer() {
         <dt>Spis Mityngów AA</dt>
         <dd><Link href="https://spis.aa.org.pl/index.php/meetings/?tsml-day=any&tsml-mode=me" target='blank'>Znajdz Mityng AA</Link></dd>
         <dt>Spis Mityngów NA</dt>
-        <dd><Link href="https://anonimowinarkomani.org/mitingi_new/" target='blank'>Znajdź Mityngi NA</Link></dd>
+        <dd><Link href="https://anonimowinarkomani.org/mitingi_new/" target='blank'>Znajdź Mityng NA</Link></dd>
       </dl>
     </div>
   )
